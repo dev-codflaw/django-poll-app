@@ -50,3 +50,4 @@ config/production.py.sample
 /media
 /Docekrfile
 *__pycache__
+config.py
