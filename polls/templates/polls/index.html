@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
+
+{% block content %}
+<h1 class="text-center"> Welcome to Our Events</h1>
+
+{% if latest_question_list %}
+    <ul>
+    {% for question in latest_question_list %}
+
+    <li class="list-unstyled">
+        <img src="https://via.placeholder.com/300x200"/><br>
+        {{ question.event_text }}<br>
+        <a href="{% url 'polls:detail' question.id %}" class="btn btn-success">Check Event</a>  
+        <!-- <a href="{% url 'polls:results' question.id %}" class="btn btn-primary">Result</a> -->
+    </li>
+    <br>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}
+{% endblock content %}
