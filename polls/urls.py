@@ -11,4 +11,6 @@ urlpatterns = [
     # path('<int:pk>/results/', views.results, name='results'),
     path('<int:question_id>/vote/', views.vote, name='vote'),
     # path('<int:question_id>/is_voted/', views.vote, name='is_voted'),
+
+    path('bracket/', views.bracket, name='bracket'),
 ]

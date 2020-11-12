@@ -90,3 +90,8 @@ def vote(request, question_id):
         choice_obj.save() 
 
         return HttpResponseRedirect(reverse('polls:results', args=(question_id,)))
+
+
+
+def bracket(request):
+    return render(request, 'polls/bracket.html')
