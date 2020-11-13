@@ -1,0 +1,18 @@
+
+
+<form method="POST">
+    {% csrf_token %}
+    <input type="text" name="bracket-id"/>
+    <button>Search</button>
+</form>
+
+<h3>Bracket ID:</h3>{{data}}
+<script src="https://cdn.commoninja.com/sdk/latest/commonninja.js" defer></script>
+{% if data %}
+    <div class="commonninja_component" comp-type="bracket" comp-id="{{data}}"></div>
+
+{% else %}
+    <h4>No bracket id found</h4>
+{% endif %}
+
+<!-- <div class="commonninja_component" comp-type="bracket" comp-id="dfdfdd47-b89f-4a63-af76-971ead59586b"></div> -->

@@ -1,5 +1,6 @@
 from django.urls import path
 
+from .views import Bracket
 from . import views
 
 
@@ -13,4 +14,6 @@ urlpatterns = [
     # path('<int:question_id>/is_voted/', views.vote, name='is_voted'),
 
     path('bracket/', views.bracket, name='bracket'),
+    path('brackets/', Bracket.as_view(), name='brackets'),
+
 ]

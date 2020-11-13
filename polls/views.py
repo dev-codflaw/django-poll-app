@@ -9,6 +9,7 @@ from django.contrib import messages
 from django.shortcuts import redirect
 
 from .models import Choice, Question, Vote
+from django.views.generic import TemplateView, View
 
 
 class IndexView(generic.ListView):
@@ -94,4 +95,15 @@ def vote(request, question_id):
 
 
 def bracket(request):
-    return render(request, 'polls/bracket.html')
+    # if request.POST['bracket-id']:
+    return render(request, 'polls/bracket.html', {'data':'hello world'})
+    
+    # return render(request, 'polls/bracket.html')
+
+
+class Bracket(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'polls/brackets.html', {'data':'Please enter bracket ID'})
+    
+    def post(self, request, *args, **kwargs):
+        return render(request, 'polls/brackets.html', {'data':request.POST['bracket-id']})
