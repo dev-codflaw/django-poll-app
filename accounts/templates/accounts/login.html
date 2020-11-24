@@ -20,8 +20,12 @@
             <input type="checkbox" value="remember-me"> Remember me
           </label>
         </div>
+        <a href="{% url 'password_reset' %}" class="btn-block">Forget Password ?</a>
+
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
         <a href="{% url 'register' %}" class="btn btn-lg btn-primary btn-block">Register</a>
+        <a href="#" class="btn btn-lg btn-primary btn-block">Gmail Login</a>
+        <a href="#" class="btn btn-lg btn-primary btn-block">Facebook Login</a>
 
         <p class="mt-5 mb-3 text-muted text-center">&copy; 2017-2020</p>
       </form>

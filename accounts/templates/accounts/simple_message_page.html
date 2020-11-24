@@ -3,12 +3,12 @@
   <div class="error-msg">
     {% if text_msg %}
         <p>{{text_msg}}</p>
-        <a href="{% url 'login' %}">Go to login page</a><br/>
-        <a href="{% url 'hello' %}">Go to home page</a>
+        <a href="{% url 'accounts:login' %}">Go to login page</a><br/>
+        <a href="{% url 'accounts:hello' %}">Go to home page</a>
     {% else %}
         <p>Oops, Page not found!</p>
-        <a href="{% url 'login' %}">Go to login page</a><br/>
-        <a href="{% url 'hello' %}">Go to home page</a>
+        <a href="{% url 'accounts:login' %}">Go to login page</a><br/>
+        <a href="{% url 'accounts:hello' %}">Go to home page</a>
     {% endif %}
   </div>
 </div>

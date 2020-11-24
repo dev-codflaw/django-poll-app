@@ -17,12 +17,38 @@ from django.contrib import admin
 from django.urls import path, include
 
 from django.views.generic.base import TemplateView
+# from accounts.models import User
+# from rest_framework import routers, serializers, viewsets
+
+
+# # Serializers define the API representation.
+# class UserSerializer(serializers.HyperlinkedModelSerializer):
+#     class Meta:
+#         model = User
+#         fields = ['url', 'username', 'email', 'is_staff']
+
+# # ViewSets define the view behavior.
+# class UserViewSet(viewsets.ModelViewSet):
+#     queryset = User.objects.all()
+#     serializer_class = UserSerializer
+
+# # Routers provide an easy way of automatically determining the URL conf.
+# router = routers.DefaultRouter()
+# router.register(r'users', UserViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('accounts.urls')),
     path('home/', TemplateView.as_view(template_name='homepage.html'), name='home'),
+    path('dashboard/', TemplateView.as_view(template_name='index.html'), name='dashboard'),
     path('', include('polls.urls')),
-
+    path('', include('memail.urls')),
+    path('', include('import_export.urls')),
+    # path('dashboard/', ('dashboard.urls')),
+    # path('api-auth/', include('rest_framework.urls')),
+    
+    path('', include('sample.urls')),
+    # path('', include(router.urls)),
+    # path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 
 ]

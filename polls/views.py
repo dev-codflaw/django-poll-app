@@ -8,8 +8,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.shortcuts import redirect
 
-from .models import Choice, Question, Vote
+from .models import *
 from django.views.generic import TemplateView, View
+from django.views.generic import ListView
 
 
 class IndexView(generic.ListView):
@@ -107,3 +108,12 @@ class Bracket(View):
     
     def post(self, request, *args, **kwargs):
         return render(request, 'polls/brackets.html', {'data':request.POST['bracket-id']})
+    
+
+
+class TournamentList(ListView):
+    model = Tournament
+
+
+class ParticipantList(ListView):
+    model = Participant

@@ -29,7 +29,7 @@
                 </tr>
 
                 <tr>
-                    <td align="center" style="padding:10px;line-height: 25px;"><a href="http://{{ domain }}{% url 'activate' uidb64=uid token=token %}" target="_blank" style="border: none;color:#026c9e; font-weight: bold; text-decoration: none;cursor: pointer;">Email activation link</a></td>
+                    <td align="center" style="padding:10px;line-height: 25px;"><a href="http://{{ domain }}{% url 'accounts:activate' uidb64=uid token=token %}" target="_blank" style="border: none;color:#026c9e; font-weight: bold; text-decoration: none;cursor: pointer;">Email activation link</a></td>
                 </tr>
 
                 <tr>

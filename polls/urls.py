@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import Bracket
+from .views import Bracket, TournamentList, ParticipantList
 from . import views
 
 
@@ -16,4 +16,6 @@ urlpatterns = [
     path('bracket/', views.bracket, name='bracket'),
     path('brackets/', Bracket.as_view(), name='brackets'),
 
+    path('tournaments/', TournamentList.as_view(), name='tournaments'),
+    path('participants/', ParticipantList.as_view(), name='participants'),
 ]

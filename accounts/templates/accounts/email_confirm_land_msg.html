@@ -1,0 +1,57 @@
+
+
+  
+
+  {% extends "layouts/base-fullscreen.html" %}
+
+{% block title %} 403 Page {% endblock %}
+<div class="text-center">
+    <div class="error-msg">
+      {% if text_msg %}
+          <p>{{text_msg}}</p>
+          <a href="{% url 'accounts:login' %}">Go to login page</a><br/>
+          <a href="{% url 'accounts:hello' %}">Go to home page</a>
+      {% else %}
+          <p>Oops, Page not found!</p>
+          <a href="{% url 'accounts:login' %}">Go to login page</a><br/>
+          <a href="{% url 'accounts:hello' %}">Go to home page</a>
+      {% endif %}
+    </div>
+  </div>
+{% block content %}   
+
+    <div class="auth-wrapper">
+        <div class="auth-content">
+            <div class="auth-bg">
+                <span class="r"></span>
+                <span class="r s"></span>
+                <span class="r s"></span>
+                <span class="r"></span>
+            </div>
+            <div class="card">
+                <div class="card-body text-center">
+                    <div class="mb-4">
+                        <i class="feather x-circle"></i>
+                    </div>
+                    {% if text_msg %}
+                        <h4 class="mb-4">{{text_msg}}</h4>
+                        <a href="/dashboard/">Go to home page</a>
+
+                    {% else %}
+                        <h4 class="mb-4">{{text_msg}}</h4>
+                        <p>Oops, Page not found!</p>
+                        <a href="/dashboard/">Go to home page</a>
+                    {% endif %}
+
+                    <br />
+
+                    <!-- <span class="mb-0 text-muted">
+                        Access denied - <a href="/">Home</a> 
+                    </span> -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

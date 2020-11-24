@@ -1,0 +1,63 @@
+
+    <nav class="pcoded-navbar">
+        <div class="navbar-wrapper">
+            <div class="navbar-brand header-logo">
+                <a href="/dashboard/" class="b-brand">
+                    <div class="b-bg">
+                        <i class="feather icon-trending-up"></i>
+                    </div>
+                    <span class="b-title">CRM</span>
+                </a>
+                <a class="mobile-menu" id="mobile-collapse" href="javascript:"><span></span></a>
+            </div>
+            <div class="navbar-content scroll-div">
+                <ul class="nav pcoded-inner-navbar">
+                    <li class="nav-item pcoded-menu-caption">
+                        <label>Navigation</label>
+                    </li>
+                    <li data-username="dashboard Default Ecommerce CRM Analytics Crypto Project" 
+                        class="nav-item {% if 'index' in segment %} active {% endif %}">
+                        <a href="/dashboard/" class="nav-link "><span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                            <span class="pcoded-mtext">Dashboard</span></a>
+                    </li>
+
+                    <li class="nav-item pcoded-menu-caption">
+                        <label>Forms & table</label>
+                    </li>
+                    <li data-username="Table bootstrap datatable footable" 
+                        class="nav-item {% if 'tables' in segment %} active {% endif %}">
+                        <a href="{% url 'import_export:emails_upload' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-server"></i></span><span class="pcoded-mtext">Data-Sheet Upload</span></a>
+                    </li>
+                    <li data-username="Table bootstrap datatable footable" 
+                        class="nav-item {% if 'tables' in segment %} active {% endif %}">
+                        <a href="{% url 'polls:tournaments' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-server"></i></span><span class="pcoded-mtext">Bracket & Tournamants</span></a>
+                    </li>
+                    <li data-username="Table bootstrap datatable footable" 
+                        class="nav-item {% if 'tables' in segment %} active {% endif %}">
+                        <a href="{% url 'polls:participants' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-server"></i></span><span class="pcoded-mtext">Participants</span></a>
+                    </li>
+                
+                    <li data-username="Table bootstrap datatable footable" 
+                        class="nav-item {% if 'tables' in segment %} active {% endif %}">
+                        <a href="{% url 'import_export:users_email' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-server"></i></span><span class="pcoded-mtext">Users Email</span></a>
+                    </li>
+                    <li data-username="Table bootstrap datatable footable" 
+                        class="nav-item {% if 'tables' in segment %} active {% endif %}">
+                        <a href="{% url 'memail:email' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-server"></i></span><span class="pcoded-mtext">Send Email</span></a>
+                    </li>
+
+                    {% if request.user.email %}
+                    <li data-username="Disabled Menu" class="nav-item">
+                        <a href="{% url 'accounts:logout' %}" class="nav-link">
+                            <span class="pcoded-micon">
+                                <i class="feather icon-power"></i>
+                            </span>
+                            <span class="pcoded-mtext">Logout - [ {{ request.user.email }} ]</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>

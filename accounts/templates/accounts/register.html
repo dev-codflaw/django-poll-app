@@ -4,14 +4,7 @@
 <div class="text-center">
     <form class="form-signin" method="POST">
       {% csrf_token %}
-    <div class="form-label-group">
-        {{form.first_name}}
-      <label for="inputEmail">First Name</label>
-    </div>
-    <div class="form-label-group">
-      {{form.last_name}}
-    <label for="inputEmail">Last Name</label>
-  </div>
+
 
     <div class="form-label-group">
         {{form.email}}
@@ -30,6 +23,8 @@
       <!-- {{form}} -->
       <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
       <a href="{% url 'login' %}" class="btn btn-lg btn-primary btn-block">Already have an account? Login Here</a>
+      <a href="#" class="btn btn-lg btn-primary btn-block">Gmail Login</a>
+      <a href="#" class="btn btn-lg btn-primary btn-block">Facebook Login</a>
 
     </form>
 </div>
