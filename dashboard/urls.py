@@ -1,12 +1,10 @@
 from django.urls import path
 
-from .views import Bracket
-from . import views
+from dashboard.views import Dashboard
 
 app_name = 'dashboard'
 
 urlpatterns = [
-    path('', views.IndexView.as_view(), name='index'),
-
+    path('', Dashboard.as_view(), name='dashboard'),
 
 ]

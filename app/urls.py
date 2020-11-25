@@ -40,14 +40,14 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('accounts.urls')),
     path('home/', TemplateView.as_view(template_name='homepage.html'), name='home'),
-    path('dashboard/', TemplateView.as_view(template_name='index.html'), name='dashboard'),
     path('', include('polls.urls')),
     path('', include('memail.urls')),
     path('', include('import_export.urls')),
-    # path('dashboard/', ('dashboard.urls')),
+
+    path('dashboard/', include('dashboard.urls')),
+
+
     # path('api-auth/', include('rest_framework.urls')),
-    
-    # path('', include('sample.urls')),
     # path('', include(router.urls)),
     # path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 
