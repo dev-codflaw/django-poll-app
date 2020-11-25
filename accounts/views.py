@@ -179,7 +179,7 @@ def send_email_confirmation_link(request, obj, to_email_address):
     text_content = strip_tags(html_content)
 
     try:
-        msg = EmailMultiAlternatives(subject, text_content, EMAIL_HOST_USER, [to_email_address])
+        msg = EmailMultiAlternatives(subject, text_content, 'UltimateOctet NCPA <arun.sharma@upstagedu.com>', [to_email_address])
         msg.attach_alternative(html_content, "text/html")
         msg.send()
 

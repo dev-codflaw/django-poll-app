@@ -231,6 +231,6 @@ def send_email_confirmation(request, pk):
     obj = Email_Dump.objects.get(pk=pk)
     result = send_email_confirmation_link(request, obj, obj.email)
     if result:
-        return redirect('import_export:users_email')
+        return redirect('import_export:unique-emails')
     
-    return redirect('import_export:users_email')
+    return redirect('import_export:unique-emails')
