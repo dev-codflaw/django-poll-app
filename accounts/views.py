@@ -32,9 +32,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.views.generic import ListView
 
-class Hello(View):
-    def get(self, request, *args, **kwargs):
-        return render(request, 'hello.html')
+# class Hello(View):
+#     def get(self, request, *args, **kwargs):
+#         return render(request, 'hello.html')
 
 class UserList(ListView):
     model = User
@@ -94,7 +94,7 @@ class RegisterView(View):
             """ Below code for email activation """
 
             current_site = get_current_site(request)
-            subject = 'Email varification for '+ current_site.name
+            subject = 'Email verification for '+ current_site.name
             html_content = render_to_string('accounts/email/account_activation_email.html',
             {
                 'user': user,

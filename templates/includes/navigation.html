@@ -26,7 +26,7 @@
                     </li>
                     <li data-username="Table bootstrap datatable footable" 
                         class="nav-item {% if 'tables' in segment %} active {% endif %}">
-                        <a href="{% url 'import_export:emails_upload' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-server"></i></span><span class="pcoded-mtext">Data-Sheet Upload</span></a>
+                        <a href="{% url 'import_export:data-sheet-upload' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-server"></i></span><span class="pcoded-mtext">Data-Sheet Upload</span></a>
                     </li>
                     <li data-username="Table bootstrap datatable footable" 
                         class="nav-item {% if 'tables' in segment %} active {% endif %}">
@@ -39,7 +39,11 @@
                 
                     <li data-username="Table bootstrap datatable footable" 
                         class="nav-item {% if 'tables' in segment %} active {% endif %}">
-                        <a href="{% url 'import_export:users_email' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-server"></i></span><span class="pcoded-mtext">Users Email</span></a>
+                        <a href="{% url 'import_export:unique-emails' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-server"></i></span><span class="pcoded-mtext">Unique Email / Voter</span></a>
+                    </li>
+                    <li data-username="Table bootstrap datatable footable" 
+                        class="nav-item {% if 'tables' in segment %} active {% endif %}">
+                        <a href="{% url 'import_export:data-sheet' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-server"></i></span><span class="pcoded-mtext">Data Sheet-Copy</span></a>
                     </li>
                     <li data-username="Table bootstrap datatable footable" 
                         class="nav-item {% if 'tables' in segment %} active {% endif %}">

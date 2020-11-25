@@ -40,7 +40,7 @@ class SimpleEmailView(FormView):
         except Exception as e:
             messages.warning(request, e)
         try:
-            msg = EmailMultiAlternatives(subject, plain_text, from_email, [to_email])
+            msg = EmailMultiAlternatives(subject, plain_text, 'UltimateOctet NCPA <arun.sharma@upstagedu.com>', [to_email])
             msg.attach_alternative(html_text, "text/html")
             msg.send()
             # send_mail(subject, email_msg, 'ujangid0@gmail.com', [to_email], fail_silently=False)
@@ -72,5 +72,3 @@ def image_load(request):
     
     return response
 
-def activate_email(request):
-    return HttpResponse('<h1>Hello</h1>')

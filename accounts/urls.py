@@ -7,16 +7,13 @@ from django.contrib.auth.views import (
 )
 
 from .forms import EmailValidationOnForgotPassword, PasswordResetConfirmForm
-from .views import LoginView, RegisterView, ForgetPasswordView, ChangePasswordView, Hello
+from .views import LoginView, RegisterView, ForgetPasswordView, ChangePasswordView
 from .import views
 
 app_name = 'accounts'
 
 urlpatterns = [
 
-    path('hello/', Hello.as_view(), name='hello'),
-
-    path('users/', Hello.as_view(), name='users'),
     path('login/', LoginView.as_view(), name='login'),
     path('register/', RegisterView.as_view(), name='register'),
 
@@ -26,7 +23,6 @@ urlpatterns = [
     re_path(r'^email-activate/(?P<oidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
         views.email_activate, name='email_activate'),
     
-
 
     path('logout/', LogoutView.as_view(template_name='accounts/logout.html'), name='logout'), 
 
