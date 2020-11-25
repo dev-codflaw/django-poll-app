@@ -11,4 +11,4 @@ admin.site.register(DataSheetFromCommonNinja)
 
 @admin.register(Email_Dump)
 class VoterAdmin(admin.ModelAdmin):
-    list_display = ("id", "name", "email", "email_confirmed")
+    list_display = ("id", "name", "email", "email_confirmed", "varification_pending", "invalid")
