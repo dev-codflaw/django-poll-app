@@ -4,22 +4,61 @@ from django.shortcuts import render
 from django.views.generic import View
 
 from import_export.models import DataSheetFromCommonNinja, Email_Dump
+from django.db import connection
+
+
+
+# def find_valid_votes_team_wise(game_number, voted_for):
+
+#         cursor = connection.cursor().execute("SELECT COUNT (*) FROM import_export_datasheetfromcommonninja "+
+#         "LEFT JOIN import_export_email_dump ON import_export_datasheetfromcommonninja.email = import_export_email_dump.email "+
+#         "WHERE import_export_email_dump.email_confirmed=1 "+
+#         "AND import_export_datasheetfromcommonninja.game="+game_number+
+#         " AND import_export_datasheetfromcommonninja.voted_for='#2 Harvard - Opportunes'"+
+#         " AND import_export_datasheetfromcommonninja.round='Semifinals'")        
+#         return cursor.fetchall()[0][0]
 
 
 class Dashboard(View):
+
     def get(self, request, *args, **kwargs):
+
+        cursor = connection.cursor().execute("SELECT COUNT (*) FROM import_export_datasheetfromcommonninja "+
+        "JOIN import_export_email_dump ON import_export_datasheetfromcommonninja.email = import_export_email_dump.email "+
+        "where import_export_email_dump.email_confirmed=1 "+
+        "AND import_export_datasheetfromcommonninja.round='Semifinals'")
+        # cursor.execute("SELECT COUNT(*) FROM import_export_email_dump")
+        auth_votes = cursor.fetchall()
+        # print(result[0][0])
+
+        cursor = connection.cursor().execute("SELECT COUNT (*) FROM import_export_datasheetfromcommonninja "+
+        "LEFT JOIN import_export_email_dump ON import_export_datasheetfromcommonninja.email = import_export_email_dump.email "+
+        "where import_export_email_dump.email_confirmed=1 "+
+        "AND import_export_datasheetfromcommonninja.round='Semifinals' AND import_export_datasheetfromcommonninja.game='25' AND import_export_datasheetfromcommonninja.voted_for='#2 Harvard - Opportunes'")
+        g25_harvard_auth_votes = cursor.fetchall()[0][0]
+
+        cursor = connection.cursor().execute("SELECT COUNT (*) FROM import_export_datasheetfromcommonninja "+
+        "LEFT JOIN import_export_email_dump ON import_export_datasheetfromcommonninja.email = import_export_email_dump.email "+
+        "where import_export_email_dump.invalid=1 "+
+        "AND import_export_datasheetfromcommonninja.round='Semifinals' AND import_export_datasheetfromcommonninja.game='25' AND import_export_datasheetfromcommonninja.voted_for='#2 Harvard - Opportunes'")
+        g25_harvard_dis_votes = cursor.fetchall()[0][0]
+
+        
+
+
         context = {
             'total_votes':DataSheetFromCommonNinja.objects.filter(round='Semifinals').count(),
             'total_voters':DataSheetFromCommonNinja.objects.order_by().values('email').distinct().count(),
-            'auth_votes':'0',
+            'auth_votes': auth_votes[0][0],
             'auth_voters':Email_Dump.objects.filter(email_confirmed=True).count(),
-            'varification_pending':Email_Dump.objects.filter(email_confirmed=False, varification_pending=True).count(),
+            'varification_pending':Email_Dump.objects.filter(email_confirmed=False, varification_pending=True, invalid=False).count(),
             'invalid_voters':Email_Dump.objects.filter(invalid=True).count(),
 
-            'g25_harvard_total_votes': DataSheetFromCommonNinja.objects.filter(game='25', voted_for='#2 Harvard - Opportunes').values('email').count(),
+            'g25_harvard_total_votes': DataSheetFromCommonNinja.objects.filter(game='25', voted_for='#2 Harvard - Opportunes').count(),
             'g25_harvard_total_voters': DataSheetFromCommonNinja.objects.filter(game='25', voted_for='#2 Harvard - Opportunes').values('email').distinct().count(),
-            'g25_harvard_auth_votes': '0',
-            'g25_harvard_auth_voters': '0',
+            'g25_harvard_auth_votes': g25_harvard_auth_votes,
+            # 'g25_harvard_auth_votes': find_valid_votes_team_wise(game_number='25', voted_for='#2 Harvard - Opportunes'),
+            'g25_harvard_dis_votes': g25_harvard_dis_votes,
 
             'g25_rutgers_total_votes': DataSheetFromCommonNinja.objects.filter(game='25', voted_for='#2 Rutgers - Raag').values('email').count(),
             'g25_rutgers_total_voters': DataSheetFromCommonNinja.objects.filter(game='25', voted_for='#2 Rutgers - Raag').values('email').distinct().count(),
@@ -57,18 +96,7 @@ class Dashboard(View):
             'g28_ucla_auth_votes': '0',
             'g28_ucla_auth_voters': '0',
 
-
-
         }
 
-        ds_obj_list = list(DataSheetFromCommonNinja.objects.all())
-
-        voter_obj_list = list(Email_Dump.objects.filter(email_confirmed=True))
-
-
-
-
-        # context['data'] = ds_obj_list
-        # context['data1'] = voter_obj_list
 
         return render(request, 'index.html', context)

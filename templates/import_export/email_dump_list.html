@@ -20,20 +20,20 @@
                     <div class="col-md-12">
                         <div class="page-header-title">
                             <h5 class="m-b-10">Unique Email / Voter</h5>
-                            {{fromDate}}
-                            {{toDate}}
+                            <!-- {{fromDate}}
+                            {{toDate}} -->
                             <a class="btn btn-danger float-right" href="{% url 'import_export:all-invalid-emails' %}">Invalid Emails</a>
                             <a class="btn btn-success float-right" href="{% url 'import_export:all-varified-emails' %}">Valid Emails</a>
                             <a class="btn btn-warning float-right" href="{% url 'import_export:all-pending-emails' %}">Pending Emails</a>
                             <a class="btn btn-primary float-right" href="{% url 'import_export:unique-emails' %}">All Emails</a>
-                            <form method="GET" action="{% url 'import_export:date-wise-emails' %}">
+                            <!-- <form method="GET" action="{% url 'import_export:date-wise-emails' %}">
                                {% csrf_token %}
                                 <label for="from">From</label>
                                 <input type="text" id="from" name="fromDate">
                                 <label for="to">to</label>
                                 <input type="text" id="to" name="toDate">
                                 <input type="submit" id="date-sub-btn"/>
-                            </form>
+                            </form> -->
                             
                         </div>
                         <ul class="breadcrumb">
@@ -117,7 +117,7 @@
                                                     <td>
                                                         {% if user.email_confirmed %}
                                                             <span class="text-success">Valid Email</span>
-                                                        {% elif user.varification_pending  %}
+                                                        {% elif user.varification_pending and not user.invalid%}
                                                             <span class="text-warning">Varification Pending</a>
                                                         {% elif user.invalid %}
                                                             <span class="text-c-red">Invalid email</a>

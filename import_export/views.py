@@ -120,6 +120,7 @@ class DataSheetUpload(FormView):
         count = 0
         for column in csv.reader(io_string, delimiter=',', quotechar="|"):
             count = count + 1
+            
             str_date = column[7][0:24]
             try:
                 # str_date = "Nov 23 2020 16:19:41" # example
