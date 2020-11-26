@@ -43,7 +43,11 @@ class Dashboard(View):
         "AND import_export_datasheetfromcommonninja.round='Semifinals' AND import_export_datasheetfromcommonninja.game='25' AND import_export_datasheetfromcommonninja.voted_for='#2 Harvard - Opportunes'")
         g25_harvard_dis_votes = cursor.fetchall()[0][0]
 
-        
+        cursor = connection.cursor().execute("SELECT COUNT (*) FROM import_export_datasheetfromcommonninja "+
+        "JOIN import_export_email_dump ON import_export_datasheetfromcommonninja.email = import_export_email_dump.email "+
+        "WHERE import_export_email_dump.varification_pending=1 AND import_export_email_dump.email_confirmed=0 AND import_export_email_dump.invalid=0 "+
+        "AND import_export_datasheetfromcommonninja.round='Semifinals' AND import_export_datasheetfromcommonninja.game='25' AND import_export_datasheetfromcommonninja.voted_for='#2 Harvard - Opportunes'")
+        g25_harvard_pending_votes = cursor.fetchall()[0][0]
 
 
         context = {
@@ -59,6 +63,7 @@ class Dashboard(View):
             'g25_harvard_auth_votes': g25_harvard_auth_votes,
             # 'g25_harvard_auth_votes': find_valid_votes_team_wise(game_number='25', voted_for='#2 Harvard - Opportunes'),
             'g25_harvard_dis_votes': g25_harvard_dis_votes,
+            'g25_harvard_pending_votes': g25_harvard_pending_votes,
 
             'g25_rutgers_total_votes': DataSheetFromCommonNinja.objects.filter(game='25', voted_for='#2 Rutgers - Raag').values('email').count(),
             'g25_rutgers_total_voters': DataSheetFromCommonNinja.objects.filter(game='25', voted_for='#2 Rutgers - Raag').values('email').distinct().count(),
