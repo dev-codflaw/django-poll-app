@@ -52,7 +52,7 @@ class Dashboard(View):
 
         context = {
             'total_votes':DataSheetFromCommonNinja.objects.filter(round='Semifinals').count(),
-            'total_voters':DataSheetFromCommonNinja.objects.order_by().values('email').distinct().count(),
+            'total_voters':Email_Dump.objects.all().count(),
             'auth_votes': auth_votes[0][0],
             'auth_voters':Email_Dump.objects.filter(email_confirmed=True).count(),
             'varification_pending':Email_Dump.objects.filter(email_confirmed=False, varification_pending=True, invalid=False).count(),

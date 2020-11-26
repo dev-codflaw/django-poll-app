@@ -160,7 +160,7 @@ class VarifiedEmailList(ListView):
 class PendingEmailList(ListView):
     model = Email_Dump
     paginate_by = 10
-    queryset = Email_Dump.objects.filter(varification_pending=True, email_confirmed=False).order_by('email')
+    queryset = Email_Dump.objects.filter(varification_pending=True, email_confirmed=False, invalid=False).order_by('email')
 
 class InvalidEmailList(ListView):
     model = Email_Dump
