@@ -4,59 +4,81 @@ from django.shortcuts import render
 from django.views.generic import View
 
 from import_export.models import DataSheetFromCommonNinja, Email_Dump
-from django.db import connection
-
+from django.db import connection, transaction
 
 
 def find_valid_votes_team_wise(game_number, voted_for):
 
-        p = ("SELECT COUNT (*) FROM import_export_datasheetfromcommonninja "\
-            +"JOIN import_export_email_dump ON import_export_datasheetfromcommonninja.email = import_export_email_dump.email "\
-                +"WHERE import_export_email_dump.email_confirmed=1 "\
-                    +"AND import_export_datasheetfromcommonninja.game='%s' AND import_export_datasheetfromcommonninja.voted_for='%s' AND import_export_datasheetfromcommonninja.round='Semifinals'" % (game_number, voted_for))
+        try:
+            p = ("SELECT COUNT (*) FROM import_export_datasheetfromcommonninja "\
+                +"JOIN import_export_email_dump ON import_export_datasheetfromcommonninja.email = import_export_email_dump.email "\
+                    +"WHERE import_export_email_dump.email_confirmed=True "\
+                        +"AND import_export_datasheetfromcommonninja.game='%s' AND import_export_datasheetfromcommonninja.voted_for='%s' AND import_export_datasheetfromcommonninja.round='Semifinals'" % (game_number, voted_for))
+            
+            cursor = connection.cursor()
+            cursor.execute(p)
+            row = cursor.fetchone()
+            return row[0]
+        except Exception as e:
+            print(e) 
+            pass
 
-        cursor = connection.cursor().execute(p)      
-        return cursor.fetchall()[0][0]
 
 
 def find_invalid_votes_team_wise(game_number, voted_for):
-
-        p = ("SELECT COUNT (*) FROM import_export_datasheetfromcommonninja "\
-            +"JOIN import_export_email_dump ON import_export_datasheetfromcommonninja.email = import_export_email_dump.email "\
-                +"WHERE import_export_email_dump.invalid=1 "\
-                    +"AND import_export_datasheetfromcommonninja.game='%s' AND import_export_datasheetfromcommonninja.voted_for='%s' AND import_export_datasheetfromcommonninja.round='Semifinals'" % (game_number, voted_for))
-
-        cursor = connection.cursor().execute(p)      
-        return cursor.fetchall()[0][0]
+        try:
+            p = ("SELECT COUNT (*) FROM import_export_datasheetfromcommonninja "\
+                +"JOIN import_export_email_dump ON import_export_datasheetfromcommonninja.email = import_export_email_dump.email "\
+                    +"WHERE import_export_email_dump.invalid=True "\
+                        +"AND import_export_datasheetfromcommonninja.game='%s' AND import_export_datasheetfromcommonninja.voted_for='%s' AND import_export_datasheetfromcommonninja.round='Semifinals'" % (game_number, voted_for))
+            cursor = connection.cursor()
+            cursor.execute(p)
+            row = cursor.fetchone()
+            return row[0]
+        except Exception as e:
+            print(e)
+            pass
 
 def find_pending_votes_team_wise(game_number, voted_for):
 
-        p = ("SELECT COUNT (*) FROM import_export_datasheetfromcommonninja "\
-            +"JOIN import_export_email_dump ON import_export_datasheetfromcommonninja.email = import_export_email_dump.email "\
-                +"WHERE import_export_email_dump.varification_pending=1 AND import_export_email_dump.email_confirmed=0 AND import_export_email_dump.invalid=0 "\
-                    +"AND import_export_datasheetfromcommonninja.game='%s' AND import_export_datasheetfromcommonninja.voted_for='%s' AND import_export_datasheetfromcommonninja.round='Semifinals'" % (game_number, voted_for))
+        try: 
+            p = ("SELECT COUNT (*) FROM import_export_datasheetfromcommonninja "\
+                +"JOIN import_export_email_dump ON import_export_datasheetfromcommonninja.email = import_export_email_dump.email "\
+                    +"WHERE import_export_email_dump.varification_pending=True AND import_export_email_dump.email_confirmed=False AND import_export_email_dump.invalid=False "\
+                        +"AND import_export_datasheetfromcommonninja.game='%s' AND import_export_datasheetfromcommonninja.voted_for='%s' AND import_export_datasheetfromcommonninja.round='Semifinals'" % (game_number, voted_for))
+            
+            cursor = connection.cursor()
+            cursor.execute(p)
+            row = cursor.fetchone()
+            return row[0]
+        except Exception as e:
+            print(e)           
+            pass
 
-        cursor = connection.cursor().execute(p)      
-        return cursor.fetchall()[0][0]
+def total_auth_votes():
+        try: 
+            p = ("SELECT COUNT (*) FROM import_export_datasheetfromcommonninja "\
+                +"JOIN import_export_email_dump ON import_export_datasheetfromcommonninja.email = import_export_email_dump.email "\
+                    +"WHERE import_export_email_dump.email_confirmed=True")
+                        
+            cursor = connection.cursor()
+            cursor.execute(p)
+            row = cursor.fetchone()
+            return row[0]
+
+        except Exception as e:
+            print(e) 
+            pass
+
 
 class Dashboard(View):
 
     def get(self, request, *args, **kwargs):
 
-        cursor = connection.cursor().execute("SELECT COUNT (*) FROM import_export_datasheetfromcommonninja "+
-        "JOIN import_export_email_dump ON import_export_datasheetfromcommonninja.email = import_export_email_dump.email "+
-        "where import_export_email_dump.email_confirmed=1 "+
-        "AND import_export_datasheetfromcommonninja.round='Semifinals'")
-        # cursor.execute("SELECT COUNT(*) FROM import_export_email_dump")
-        auth_votes = cursor.fetchall()
-        # print(result[0][0])
-
-
-
         context = {
             'total_votes':DataSheetFromCommonNinja.objects.filter(round='Semifinals').count(),
             'total_voters':Email_Dump.objects.all().count(),
-            'auth_votes': auth_votes[0][0],
+            'auth_votes': total_auth_votes(),
             'auth_voters':Email_Dump.objects.filter(email_confirmed=True).count(),
             'varification_pending':Email_Dump.objects.filter(email_confirmed=False, varification_pending=True, invalid=False).count(),
             'invalid_voters':Email_Dump.objects.filter(invalid=True).count(),

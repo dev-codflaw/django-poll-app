@@ -20,7 +20,9 @@
   <main role="main">
     <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
       <h5 class="my-0 mr-md-auto font-weight-normal">
-        <a href="/">Home</a>
+        <!-- <a href="/">Home</a> -->
+        <a href="/dashboard/" class="btn btn-outline-secondary">Dashboard</a>
+
       </h5>
       <nav class="my-2 my-md-0 mr-md-3">
         {% if user.is_authenticated %}
@@ -39,8 +41,8 @@
         </ul>
         {% else %}
         <form class="form-inline ml-auto">
-          <a href="{% url 'accounts:login' %}" class="btn btn-outline-secondary">Log in</a>
-          <a href="{% url 'accounts:register' %}" class="btn btn-primary ml-2">Register</a>
+          <!-- <a href="{% url 'accounts:login' %}" class="btn btn-outline-secondary">Log in</a> -->
+          <!-- <a href="{% url 'accounts:register' %}" class="btn btn-primary ml-2">Register</a> -->
         </form>
         {% endif %}
       </nav>
@@ -70,7 +72,7 @@
 
   <footer class="footer">
     <div class="container">
-      <span class="text-muted">Footer...</span>
+      <!-- <span class="text-muted">Footer...</span> -->
     </div>
   </footer>
 

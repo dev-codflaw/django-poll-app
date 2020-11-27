@@ -121,15 +121,6 @@ class DataSheetUpload(FormView):
         for column in csv.reader(io_string, delimiter=',', quotechar="|"):
             count = count + 1
             
-            str_date = column[7][0:24]
-            try:
-                # str_date = "Nov 23 2020 16:19:41" # example
-                date_time_obj = datetime.strptime(str_date, "%a %b %d %Y %H:%M:%S")
-                aware_datetime = make_aware(date_time_obj)
-                # date_time_obj = "2012-09-04 06:00Z" # example
-            except ValueError as e:
-                date_time_obj = datetime.strptime(str_date, "%a %b %d %Y %H:%M:")
-
             _, created = DataSheetFromCommonNinja.objects.update_or_create(
                 name=column[0],
                 email=column[1],
@@ -138,7 +129,6 @@ class DataSheetUpload(FormView):
                 round = column[4], 
                 game = column[5],
                 voted_for = column[6],
-                date = aware_datetime
             )
             print(count)
 
@@ -174,17 +164,34 @@ class DataSheetListView(ListView):
 
 
 def load_unique_emails(request):
-    uni_email_obj = list(DataSheetFromCommonNinja.objects.order_by().values('name', 'email', 'date').distinct())
+    # uni_email_obj = list(DataSheetFromCommonNinja.objects.order_by().values('name', 'email').distinct())
+    # uni_email_obj = DataSheetFromCommonNinja.objects.order_by().values( 'email').distinct().count()
+    # uni_email_obj = DataSheetFromCommonNinja.objects.values_list('email').distinct()
+    uni_email_obj = list(DataSheetFromCommonNinja.objects.all().order_by('email').distinct('email'))
+
+
+    # print(uni_email_obj)
+    
     count = 0
+    new_entry = 0
     for uobj in uni_email_obj:
         count = count +1
+        # if Email_Dump.objects.get(email=uobj.email):
+        #     print('exist')
+        # else:
+        #     Email_Dump.objects.create(name=uobj.name, email=uobj.email).save()
+        #     print('exist')
+
+
         _, created = Email_Dump.objects.update_or_create(
-            name=uobj['name'],
-            email=uobj['email'], 
-            vote_time=uobj['date'])
+            name=uobj.name,
+            email=uobj.email)
         print(count)
-        # str_msg = 'New entry'
-        # messages.success(request, str_msg)
+        if created:
+            new_entry = new_entry +1
+    
+    str_msg = 'New entry '+ str(new_entry)
+    messages.success(request, str_msg)
     return redirect('import_export:unique-emails')
 
 
