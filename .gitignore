@@ -51,4 +51,9 @@ config/production.py.sample
 /Docekrfile
 *__pycache__
 config.py
+dbconfig.py
+emailconfig.py
+/mail_crd.py
+db_crd.py
+/app/mail_crd.py
 /sample

@@ -73,10 +73,10 @@ SITE_ID = 1
 
 
 # Database
-from app.db_crd import *
+from app.dbconfig import *
 
 # Email
-from app.mail_crd import *
+from app.emailconfig import *
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
