@@ -74,8 +74,12 @@ def total_auth_votes():
 class Dashboard(View):
 
     def get(self, request, *args, **kwargs):
+        
+        s = DataSheetFromCommonNinja.objects.values('updated_at').order_by('id')[0]
+        print(s['updated_at'])
 
         context = {
+            'last_status_updated_dashboard':s['updated_at'],
             'total_votes':DataSheetFromCommonNinja.objects.filter(round='Semifinals').count(),
             'total_voters':Email_Dump.objects.all().count(),
             'auth_votes': total_auth_votes(),

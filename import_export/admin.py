@@ -27,3 +27,4 @@ class VoterAdmin(admin.ModelAdmin):
 @admin.register(DataSheetFromCommonNinja)
 class DastasheetAdmin(admin.ModelAdmin):
     search_fields = ('name', 'email', )
+    list_display = ("name", "email", "updated_at")
