@@ -11,7 +11,7 @@ from django.template.loader import get_template
 from django.utils.html import strip_tags
 from django.urls import reverse
 
-from app.config import EMAIL_HOST_USER
+from app.mail_crd import EMAIL_HOST_USER
 
 class SimpleEmailView(FormView):
     success_url = '/memail/'
