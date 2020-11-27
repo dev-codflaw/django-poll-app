@@ -16,7 +16,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.core.mail import send_mail, BadHeaderError
 
 from .tokens import account_activation_token
-from app.mail_crd import EMAIL_HOST_USER
+from app.emailconfig import EMAIL_HOST_USER
 
 from django.contrib.auth import login, authenticate
 # from django.contrib.auth.models import User
