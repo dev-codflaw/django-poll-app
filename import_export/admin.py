@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from import_export.models import Profile, Email_Dump, DataSheetFromCommonNinja
+from import_export.models import Email_Dump, DataSheetFromCommonNinja
 
 
 def make_pending(modeladmin, request, queryset):

@@ -4,7 +4,6 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 from import_export.views import (
-    profile_upload, 
     EmailUpload, 
     EmailDumpList, 
     send_email_confirmation, 
@@ -21,9 +20,7 @@ from import_export.views import (
 app_name = 'import_export'
 
 urlpatterns = [
-    path('upload-csv/', profile_upload, name="profile_upload"),
 
-    path('emails-upload-csv/', EmailUpload.as_view(), name="emails_upload"),
     path('data-sheet/upload/', DataSheetUpload.as_view(), name="data-sheet-upload"),
 
     path('data-sheet/email/load/', load_unique_emails, name="email-load"),

@@ -5,8 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
-<title>{% block title %}Django App{% endblock title %}</title>
-<meta name="description" content="A framework for launching new Django projects quickly.">
+<title>{% block title %}UpStaged App{% endblock title %}</title>
 <meta name="author" content="">
 
 {% block css %}
@@ -21,7 +20,7 @@
     <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
       <h5 class="my-0 mr-md-auto font-weight-normal">
         <!-- <a href="/">Home</a> -->
-        <a href="/dashboard/" class="btn btn-outline-secondary">Dashboard</a>
+        <a href="{% url 'dashboard:dashboard' %}" class="btn btn-outline-secondary">Dashboard</a>
 
       </h5>
       <nav class="my-2 my-md-0 mr-md-3">
@@ -63,9 +62,7 @@
         
     {% block content %}
 
-      <p>Event list:</p>
 
-      <a href="polls/" class="btn btn-primary ml-2">polls</a>
 
     {% endblock content %}
   </div>

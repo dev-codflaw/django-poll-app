@@ -44,7 +44,7 @@ urlpatterns = [
     path('', include('memail.urls')),
     path('', include('import_export.urls')),
 
-    path('dashboard/', include('dashboard.urls')),
+    path('', include('dashboard.urls')),
 
 
     # path('api-auth/', include('rest_framework.urls')),

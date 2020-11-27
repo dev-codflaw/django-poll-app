@@ -32,9 +32,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.views.generic import ListView
 
-# class Hello(View):
-#     def get(self, request, *args, **kwargs):
-#         return render(request, 'hello.html')
+
 
 class UserList(ListView):
     model = User
