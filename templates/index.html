@@ -70,7 +70,7 @@
                                     <h6 class="mb-4">Authenticated Votes</h6>
                                     <div class="row d-flex align-items-center">
                                         <div class="col-9">
-                                            <h3 class="f-w-300 d-flex align-items-center  m-b-0">{{auth_votes}} ({{auth_votes_percent | floatformat}}%)</h3>
+                                            <h3 class="f-w-300 d-flex align-items-center  m-b-0">{{auth_votes}} </h3>
                                         </div>
                                     </div>
                                 </div>
@@ -83,7 +83,7 @@
                                     <h6 class="mb-4">Authenticated Voters</h6>
                                     <div class="row d-flex align-items-center">
                                         <div class="col-9">
-                                            <h3 class="f-w-300 d-flex align-items-center  m-b-0">{{auth_voters}} ({{auth_voters_percent | floatformat}}%)</h3>
+                                            <h3 class="f-w-300 d-flex align-items-center  m-b-0">{{auth_voters}} </h3>
                                         </div>
                                     </div>
                                 </div>
@@ -95,7 +95,7 @@
                                     <h6 class="mb-4">Pending Voters</h6>
                                     <div class="row d-flex align-items-center">
                                         <div class="col-9">
-                                            <h3 class="f-w-300 d-flex align-items-center  m-b-0">{{varification_pending}} ({{pending_voters_percent | floatformat}}%)</h3>
+                                            <h3 class="f-w-300 d-flex align-items-center  m-b-0">{{varification_pending}} </h3>
                                         </div>
                                     </div>
                                 </div>
@@ -107,7 +107,7 @@
                                     <h6 class="mb-4">Disqualified Voters</h6>
                                     <div class="row d-flex align-items-center">
                                         <div class="col-9">
-                                            <h3 class="f-w-300 d-flex align-items-center  m-b-0">{{invalid_voters}} ({{invalid_voters_percent | floatformat}}%)</h3>
+                                            <h3 class="f-w-300 d-flex align-items-center  m-b-0">{{invalid_voters}}</h3>
                                         </div>
                                     </div>
                                 </div>
@@ -127,7 +127,7 @@
                                             <tr>
                                                 <th>Game</th>
                                                 <th>Particiapent</th>
-                                                <th>Percent</th>
+                                                <!-- <th>Percent</th> -->
                                                 <th>Total Votes</th>
                                                 <th class="text-success">Authenticated</th>
                                                 <th class="text-warning">Pending</th>
@@ -139,7 +139,7 @@
                                             <tr>
                                                 <td><h6 class="m-0">Game 25</h6></td>
                                                 <td class="table-g1pv"><h6 class="m-0">#2 Harvard - Opportunes </h6></td>
-                                                <td class="table-g1pv">{{g25_p1_prcnt | floatformat}}%</td>
+                                                <!-- <td class="table-g1pv">{{g25_p1_prcnt | floatformat}}%</td> -->
                                                 <td><h6 class="m-0 text-c-dark">{{g25_harvard_total_votes}}</h6></td>
                                                 <td><h6 class="m-0 text-c-dark">{{g25_harvard_auth_votes}} </h6></td>
                                                 <td><h6 class="m-0 text-c-dark">{{g25_harvard_pending_votes}} </h6></td>
@@ -149,7 +149,7 @@
                                             <tr>
                                                 <td><h6 class="m-0">Game 25</h6></td>
                                                 <td class="table-g1pv"><h6 class="m-0">#2 Rutgers-Raag </h6></td>
-                                                <td class="table-g1pv">{{g25_p2_auth_prcnt | floatformat}}%</td>
+                                                <!-- <td class="table-g1pv">{{g25_p2_auth_prcnt | floatformat}}%</td> -->
                                                 <td><h6 class="m-0 text-c-dark">{{g25_rutgers_total_votes}}</h6></td>
                                                 <td><h6 class="m-0 text-c-dark">{{g25_rutgers_auth_votes}}   </h6></td>
                                                 <td><h6 class="m-0 text-c-dark">{{g25_rutgers_pending_votes}}</h6></td>
@@ -159,7 +159,7 @@
                                             <tr>
                                                 <td><h6 class="m-0">Game 26</h6></td>
                                                 <td class="table-g2pv"><h6 class="m-0">#2 U Penn - Penn Masala </h6></td>
-                                                <td class="table-g2pv">{{g26_p1_prcnt | floatformat}}%</td>
+                                                <!-- <td class="table-g2pv">{{g26_p1_prcnt | floatformat}}%</td> -->
                                                 <td><h6 class="m-0 text-c-dark">{{g26_penn_total_votes}}</h6></td>
                                                 <td><h6 class="m-0 text-c-dark">{{g26_penn_auth_votes}}  </h6></td>
                                                 <td><h6 class="m-0 text-c-dark">{{g26_penn_pending_votes}} </h6></td>
@@ -169,7 +169,7 @@
                                             <tr>
                                                 <td><h6 class="m-0">Game 26</h6></td>
                                                 <td class="table-g2pv"><h6 class="m-0">#2 U illinois - No Comment </h6></td>
-                                                <td class="table-g2pv">{{g26_p2_prcnt | floatformat}}%</td>
+                                                <!-- <td class="table-g2pv">{{g26_p2_prcnt | floatformat}}%</td> -->
                                                 <td><h6 class="m-0 text-c-dark">{{g26_illinois_total_votes}}</h6></td>
                                                 <td><h6 class="m-0 text-c-dark">{{g26_illinois_auth_votes}} </h6></td>
                                                 <td><h6 class="m-0 text-c-dark">{{g26_illinois_pending_votes}} </h6></td>
@@ -179,7 +179,7 @@
                                             <tr>
                                                 <td><h6 class="m-0">Game 27</h6></td>
                                                 <td class="table-g3pv"><h6 class="m-0">#1 Vanderbilt - Melodores </h6></td>
-                                                <td class="table-g3pv">{{g27_p1_prcnt | floatformat}}%</td>
+                                                <!-- <td class="table-g3pv">{{g27_p1_prcnt | floatformat}}%</td> -->
                                                 <td><h6 class="m-0 text-c-dark">{{g27_vanderbilt_total_votes}}</h6></td>
                                                 <td><h6 class="m-0 text-c-dark">{{g27_vanderbilt_auth_votes}}  </h6></td>
                                                 <td><h6 class="m-0 text-c-dark">{{g27_vanderbilt_pending_votes}}</h6></td>
@@ -189,7 +189,7 @@
                                             <tr>
                                                 <td><h6 class="m-0">Game 27</h6></td>
                                                 <td class="table-g3pv"><h6 class="m-0">#3 Florida State - All-Night Yahtzee </h6></td>
-                                                <td class="table-g3pv">{{g27_p2_prcnt | floatformat}}%</td>
+                                                <!-- <td class="table-g3pv">{{g27_p2_prcnt | floatformat}}%</td> -->
                                                 <td><h6 class="m-0 text-c-dark">{{g27_florida_total_votes}}</h6></td>
                                                 <td><h6 class="m-0 text-c-dark">{{g27_florida_auth_votes}}   </h6></td>
                                                 <td><h6 class="m-0 text-c-dark">{{g27_florida_pending_votes}} </h6></td>
@@ -198,7 +198,7 @@
                                             <tr>
                                                 <td><h6 class="m-0">Game 28</h6></td>
                                                 <td class="table-g4pv"><h6 class="m-0">#2 Brigham Young U-Vocal Point </h6></td>
-                                                <td class="table-g4pv">{{g28_p1_prcnt | floatformat}}%</td>
+                                                <!-- <td class="table-g4pv">{{g28_p1_prcnt | floatformat}}%</td> -->
                                                 <td><h6 class="m-0 text-c-dark">{{g28_bringham_total_votes}}</h6></td>
                                                 <td><h6 class="m-0 text-c-dark">{{g28_bringham_auth_votes}} </h6></td>
                                                 <td><h6 class="m-0 text-c-dark">{{g28_bringham_pending_votes}} </h6></td>
@@ -208,7 +208,7 @@
                                             <tr>
                                                 <td><h6 class="m-0">Game 28</h6></td>
                                                 <td class="table-g4pv"><h6 class="m-0">#1 UCLA - Scattertones </h6></td>
-                                                <td class="table-g4pv">{{g28_p2_prcnt | floatformat}}%</td>
+                                                <!-- <td class="table-g4pv">{{g28_p2_prcnt | floatformat}}%</td> -->
                                                 <td><h6 class="m-0 text-c-dark">{{g28_ucla_total_votes}}</h6></td>
                                                 <td><h6 class="m-0 text-c-dark">{{g28_ucla_auth_votes}}  </h6></td>
                                                 <td><h6 class="m-0 text-c-dark">{{g28_ucla_pending_votes}} </h6></td>
