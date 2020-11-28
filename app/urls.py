@@ -40,7 +40,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('accounts.urls')),
     path('home/', TemplateView.as_view(template_name='homepage.html'), name='home'),
-    path('', include('polls.urls')),
     path('', include('memail.urls')),
     path('', include('import_export.urls')),
 

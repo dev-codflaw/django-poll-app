@@ -76,16 +76,20 @@ class Dashboard(View):
     def get(self, request, *args, **kwargs):
         
         s = DataSheetFromCommonNinja.objects.values('updated_at').order_by('id')[0]
-        # print(s['updated_at'])
+        total_voters = Email_Dump.objects.all().count()
+        auth_voters = Email_Dump.objects.filter(email_confirmed=True).count()
+        varification_pending = Email_Dump.objects.filter(email_confirmed=False, varification_pending=True, invalid=False).count()
+        invalid_voters = Email_Dump.objects.filter(invalid=True).count()
 
         context = {
+
             'last_status_updated_dashboard':s['updated_at'],
             'total_votes':DataSheetFromCommonNinja.objects.filter(round='Semifinals').count(),
-            'total_voters':Email_Dump.objects.all().count(),
             'auth_votes': total_auth_votes(),
-            'auth_voters':Email_Dump.objects.filter(email_confirmed=True).count(),
-            'varification_pending':Email_Dump.objects.filter(email_confirmed=False, varification_pending=True, invalid=False).count(),
-            'invalid_voters':Email_Dump.objects.filter(invalid=True).count(),
+            'total_voters':total_voters ,
+            'auth_voters':auth_voters,
+            'varification_pending':varification_pending,
+            'invalid_voters':invalid_voters,
 
             'g25_harvard_total_votes': DataSheetFromCommonNinja.objects.filter(game='25', voted_for='#2 Harvard - Opportunes').count(),
             'g25_harvard_auth_votes': find_valid_votes_team_wise(game_number='25', voted_for='#2 Harvard - Opportunes'),
@@ -136,5 +140,53 @@ class Dashboard(View):
 
         }
 
+        # context['auth_votes_percent'] = (total_auth_votes()/context['total_votes'])*100
+        # context['auth_voters_percent'] = (auth_voters/context['total_voters'])*100
+        # context['pending_voters_percent'] = (varification_pending/context['total_voters'])*100
+        # context['invalid_voters_percent'] = (invalid_voters/context['total_voters'])*100
+
+        # context['g25_p1_auth_prcnt'] = (context['g25_harvard_auth_votes']/context['g25_harvard_total_votes'])*100
+        # context['g25_p1_dis_prcnt'] = (context['g25_harvard_dis_votes']/context['g25_harvard_total_votes'])*100
+        # context['g25_p1_pending_prcnt'] = (context['g25_harvard_pending_votes']/context['g25_harvard_total_votes'])*100
+
+        # context['g25_p2_auth_prcnt'] = (context['g25_rutgers_auth_votes']/context['g25_rutgers_total_votes'])*100
+        # context['g25_p2_dis_prcnt'] = (context['g25_rutgers_dis_votes']/context['g25_rutgers_total_votes'])*100
+        # context['g25_p2_pending_prcnt'] = (context['g25_rutgers_pending_votes']/context['g25_rutgers_total_votes'])*100
+
+        # context['g26_p1_auth_prcnt'] = (context['g26_penn_auth_votes']/context['g26_penn_total_votes'])*100
+        # context['g26_p1_dis_prcnt'] = (context['g26_penn_dis_votes']/context['g26_penn_total_votes'])*100
+        # context['g26_p1_pending_prcnt'] = (context['g26_penn_pending_votes']/context['g26_penn_total_votes'])*100
+
+        # context['g26_p2_auth_prcnt'] = (context['g26_illinois_auth_votes']/context['g26_illinois_total_votes'])*100
+        # context['g26_p2_dis_prcnt'] = (context['g26_illinois_dis_votes']/context['g26_illinois_total_votes'])*100
+        # context['g26_p2_pending_prcnt'] = (context['g26_illinois_pending_votes']/context['g26_illinois_total_votes'])*100
+
+        # context['g27_p1_auth_prcnt'] = (context['g27_vanderbilt_auth_votes']/context['g27_vanderbilt_total_votes'])*100
+        # context['g27_p1_dis_prcnt'] = (context['g27_vanderbilt_dis_votes']/context['g27_vanderbilt_total_votes'])*100
+        # context['g27_p1_pending_prcnt'] = (context['g27_vanderbilt_pending_votes']/context['g27_vanderbilt_total_votes'])*100
+
+        # context['g27_p2_auth_prcnt'] = (context['g27_florida_auth_votes']/context['g27_florida_total_votes'])*100
+        # context['g27_p2_dis_prcnt'] = (context['g27_florida_dis_votes']/context['g27_florida_total_votes'])*100
+        # context['g27_p2_pending_prcnt'] = (context['g27_florida_pending_votes']/context['g27_florida_total_votes'])*100
+
+        # context['g28_p1_auth_prcnt'] = (context['g28_bringham_auth_votes']/context['g28_bringham_total_votes'])*100
+        # context['g28_p1_dis_prcnt'] = (context['g28_bringham_dis_votes']/context['g28_bringham_total_votes'])*100
+        # context['g28_p1_pending_prcnt'] = (context['g28_bringham_pending_votes']/context['g28_bringham_total_votes'])*100
+
+        # context['g28_p2_auth_prcnt'] = (context['g28_ucla_auth_votes']/context['g28_ucla_total_votes'])*100
+        # context['g28_p2_dis_prcnt'] = (context['g28_ucla_dis_votes']/context['g28_ucla_total_votes'])*100
+        # context['g28_p2_pending_prcnt'] = (context['g28_ucla_pending_votes']/context['g28_ucla_total_votes'])*100
+
+        context['g25_p1_prcnt'] = ((context['g25_harvard_auth_votes'] + context['g25_harvard_pending_votes'] - context['g25_harvard_dis_votes'] ) / context['g25_harvard_total_votes'])*100
+        context['g25_p2_prcnt'] = ((context['g25_rutgers_auth_votes'] + context['g25_rutgers_pending_votes'] - context['g25_rutgers_dis_votes'] ) / context['g25_rutgers_total_votes'])*100
+
+        context['g26_p1_prcnt'] = ((context['g26_penn_auth_votes'] + context['g26_penn_pending_votes'] - context['g26_penn_dis_votes'] ) / context['g26_penn_total_votes'])*100
+        context['g26_p2_prcnt'] = ((context['g26_illinois_auth_votes'] + context['g26_illinois_pending_votes'] - context['g26_illinois_dis_votes'] ) / context['g26_illinois_total_votes'])*100
+        
+        context['g27_p1_prcnt'] = ((context['g27_vanderbilt_auth_votes'] + context['g27_vanderbilt_pending_votes'] - context['g27_vanderbilt_dis_votes'] ) / context['g27_vanderbilt_total_votes'])*100
+        context['g27_p2_prcnt'] = ((context['g27_florida_auth_votes'] + context['g27_florida_pending_votes'] - context['g27_florida_dis_votes'] ) / context['g27_florida_total_votes'])*100       
+        
+        context['g28_p1_prcnt'] = ((context['g27_florida_auth_votes'] + context['g27_florida_pending_votes'] - context['g27_florida_dis_votes'] ) / context['g28_ucla_total_votes'])*100
+        context['g28_p2_prcnt'] = ((context['g28_bringham_auth_votes'] + context['g28_bringham_pending_votes'] - context['g28_bringham_dis_votes'] ) / context['g28_ucla_total_votes'])*100
 
         return render(request, 'index.html', context)
