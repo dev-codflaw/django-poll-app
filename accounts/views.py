@@ -166,7 +166,7 @@ def send_email_confirmation_link(request, obj, to_email_address):
     """ Below code for email activation """
     
     current_site = get_current_site(request)
-    subject = 'Email varification for '+ current_site.name
+    subject = 'Email verification for '+ current_site.name
     html_content = render_to_string('accounts/email/email_confirmation_template.html',
     {
         'obj': obj,
@@ -182,7 +182,8 @@ def send_email_confirmation_link(request, obj, to_email_address):
         msg.send()
 
         eObj = Email_Dump.objects.get(pk= obj.pk)
-        eObj.varification_pending = True
+        eObj.is_email_sent = True
+        eObj.email_sent += 1
         eObj.save()
     except BadHeaderError:
         return HttpResponse('Invalid header found.')
@@ -201,7 +202,10 @@ def email_activate(request, oidb64, token):
         obj = None
 
     if obj is not None and account_activation_token.check_token(obj, token):
+        obj.verification_pending= False
+        obj.invalid = False
         obj.email_confirmed = True
+        obj.email_verification_source='by email'
         obj.save()
         context = {'text_msg':'We logged your vote. Winner will be announced soon after voting is over. Stay tuned!'}
         return render(request, 'accounts/email_confirm_land_msg.html', context)

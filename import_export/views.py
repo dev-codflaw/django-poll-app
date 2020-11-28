@@ -11,7 +11,7 @@ from accounts.views import send_email_confirmation_link
 
 from datetime import datetime
 from django.utils.timezone import make_aware
-
+from django.db.models import Count
 
 
 class EmailUpload(FormView):
@@ -60,7 +60,7 @@ class EmailUpload(FormView):
         messages.warning(request, 'message from post function')
         return render(request, 'import_export/emails_upload.html')
 
-
+# Data Sheet upload - form
 class DataSheetUpload(FormView):
 
     def get(self, request, *args, **kwargs):
@@ -102,12 +102,14 @@ class DataSheetUpload(FormView):
         return render(request, 'import_export/data_sheet_upload.html')
 
 
+
+# Unique / Email Voter listing
 class EmailDumpList(ListView):
     model = Email_Dump
     paginate_by = 10
+    queryset = Email_Dump.objects.all()
 
-
-class VarifiedEmailList(ListView):
+class VerifiedEmailList(ListView):
     model = Email_Dump
     paginate_by = 10
     queryset = Email_Dump.objects.filter(email_confirmed=True).order_by('email')
@@ -116,17 +118,37 @@ class VarifiedEmailList(ListView):
 class PendingEmailList(ListView):
     model = Email_Dump
     paginate_by = 10
-    queryset = Email_Dump.objects.filter(varification_pending=True, email_confirmed=False, invalid=False).order_by('email')
+    queryset = Email_Dump.objects.filter(verification_pending=True, email_confirmed=False, invalid=False).order_by('email')
+
+class IsEmailSendList(ListView):
+    model = Email_Dump
+    paginate_by = 10
+    queryset = Email_Dump.objects.filter(verification_pending=True, email_confirmed=False, invalid=False, is_email_sent=False).order_by('email')
+
 
 class InvalidEmailList(ListView):
     model = Email_Dump
     paginate_by = 10
     queryset = Email_Dump.objects.filter(invalid=True, email_confirmed=False).order_by('email')
 
+
+# IP Address - linting
+# class IPAddressList(ListView):
+#     template_name = 'ip_address_list.html'
+#     model = DataSheetFromCommonNinja
+#     queryset = DataSheetFromCommonNinja.objects.values('ip_address').order_by('ip_address').annotate(the_count=Count('ip_address'))
+
+def ip_address_list(request):
+    ip_list = list(DataSheetFromCommonNinja.objects.values("ip_address").order_by('the_count').annotate(the_count=Count('ip_address')))
+    # ip_list = [{'ip_address': '100.1.131.190', 'the_count': 4}, {'ip_address': '100.12.91.148', 'the_count': 4},]
+    return render(request, 'import_export/ip_address_list.html', context={'object_list': ip_list})
+
+# Data Sheet Copy - linting
 class DataSheetListView(ListView):
     model = DataSheetFromCommonNinja
     paginate_by = 10
     queryset = DataSheetFromCommonNinja.objects.all().order_by('name')
+
 
 
 def load_unique_emails(request):

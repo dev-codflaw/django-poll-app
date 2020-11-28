@@ -7,13 +7,16 @@ from import_export.views import (
     EmailUpload, 
     EmailDumpList, 
     send_email_confirmation, 
-    VarifiedEmailList, 
+    VerifiedEmailList, 
     DateWiseEmailList, 
     DataSheetUpload, 
     PendingEmailList,
     InvalidEmailList,
     DataSheetListView,
-    load_unique_emails
+    load_unique_emails,
+    IsEmailSendList,
+    # IPAddressList,
+    ip_address_list,
 )
 
 
@@ -26,9 +29,14 @@ urlpatterns = [
     path('data-sheet/email/load/', load_unique_emails, name="email-load"),
 
     path('email/voter/', EmailDumpList.as_view(), name='unique-emails'),
-    path('email/voter/varified/', VarifiedEmailList.as_view(), name='all-varified-emails'),
+    path('email/voter/verified/', VerifiedEmailList.as_view(), name='all-verified-emails'),
     path('email/voter/pending/', PendingEmailList.as_view(), name='all-pending-emails'),
     path('email/voter/invalid/', InvalidEmailList.as_view(), name='all-invalid-emails'),
+    path('email/voter/verification/email/', IsEmailSendList.as_view(), name='verification-emails-list'),
+
+    # path('email/voter/ip-address/', IPAddressList.as_view(), name='ip-address-list'),
+
+    path('email/voter/ip-address/', ip_address_list, name='ip-address-list'),
 
     path('data-sheet/', DataSheetListView.as_view(), name='data-sheet'),
 

@@ -8,7 +8,10 @@ class Email_Dump(models.Model):
     email = models.TextField(unique=True)
     invalid = models.BooleanField(default=False)
     email_confirmed = models.BooleanField(default=False)
-    varification_pending = models.BooleanField(default=False)
+    verification_pending = models.BooleanField(default=True)
+    is_email_sent = models.BooleanField(default=False)
+    email_sent = models.IntegerField(default=0)
+    email_verification_source = models.CharField(max_length=100, default='Not Yet')
     vote_time = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -21,8 +24,6 @@ class Email_Dump(models.Model):
         ordering = ['id']
 
     
-
-
 
 class DataSheetFromCommonNinja(models.Model):
     name = models.CharField(max_length=30)
@@ -41,4 +42,3 @@ class DataSheetFromCommonNinja(models.Model):
     class Meta:
         ordering = ['id']
 
-        

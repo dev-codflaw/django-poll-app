@@ -75,6 +75,7 @@
                                         <thead>
                                             <tr>
                                                 
+                                                <th>Serial</th>
                                                 <th>Title</th>
                                                 <th>Email</th>
                                                 <th>Round</th>
@@ -85,6 +86,7 @@
                                         <tbody>
                                             {% for user in object_list %}
                                                 <tr>
+                                                    <td>{{forloop.counter0|add:page_obj.start_index }} </td>
                                                     <td>{{ user.name }}</td>
                                                     <td>{{ user.email }}</td>
                                                     <td>{{ user.round }}</td>
