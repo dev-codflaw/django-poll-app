@@ -22,7 +22,7 @@ from django.contrib.auth import login, authenticate
 # from django.contrib.auth.models import User
 
 # models
-from import_export.models import Email_Dump
+from upstaged_data.models import Voter
 from accounts.models import User
 from django.contrib.auth.hashers import check_password
 from django.core.mail import EmailMultiAlternatives
@@ -181,7 +181,7 @@ def send_email_confirmation_link(request, obj, to_email_address):
         msg.attach_alternative(html_content, "text/html")
         msg.send()
 
-        eObj = Email_Dump.objects.get(pk= obj.pk)
+        eObj = Voter.objects.get(pk= obj.pk)
         eObj.is_email_sent = True
         eObj.email_sent += 1
         eObj.save()
@@ -197,7 +197,7 @@ def send_email_confirmation_link(request, obj, to_email_address):
 def email_activate(request, oidb64, token):
     try:
         oid = force_text(urlsafe_base64_decode(oidb64))
-        obj = Email_Dump.objects.get(pk=oid)
+        obj = Voter.objects.get(pk=oid)
     except (TypeError, ValueError, OverflowError, User.DoesNotExist):
         obj = None
 

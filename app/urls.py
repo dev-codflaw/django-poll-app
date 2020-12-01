@@ -41,7 +41,7 @@ urlpatterns = [
     path('', include('accounts.urls')),
     path('home/', TemplateView.as_view(template_name='homepage.html'), name='home'),
     path('', include('memail.urls')),
-    path('', include('import_export.urls')),
+    path('', include('upstaged_data.urls')),
 
     path('', include('dashboard.urls')),
 

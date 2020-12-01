@@ -3,7 +3,7 @@
 
 {% extends "layouts/base.html" %}
 
-{% block title %} Data-sheet {% endblock %} 
+{% block title %} Emails {% endblock %} 
 
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}
@@ -19,10 +19,15 @@
                 <div class="row align-items-center">
                     <div class="col-md-12">
                         <div class="page-header-title">
-                            <h5 class="m-b-10">Data Sheet</h5>
+                            <h5 class="m-b-10">Unique Email / Voter</h5>
                             <!-- {{fromDate}}
-                            {{toDate}}
-                            <form method="GET" action="{% url 'import_export:date-wise-emails' %}">
+                            {{toDate}} -->
+                            <a class="btn btn-danger float-right" href="{% url 'upstaged_data:all-invalid-emails' %}">Invalid Emails</a>
+                            <a class="btn btn-success float-right" href="{% url 'upstaged_data:all-verified-emails' %}">Valid Emails</a>
+                            <a class="btn btn-warning float-right" href="{% url 'upstaged_data:all-pending-emails' %}">Pending Verification</a>
+                            <a class="btn btn-info float-right" href="{% url 'upstaged_data:verification-emails-list' %}">Send Emails</a>
+                            <a class="btn btn-primary float-right" href="{% url 'upstaged_data:unique-emails' %}">All Emails</a>
+                            <!-- <form method="GET" action="{% url 'upstaged_data:date-wise-emails' %}">
                                {% csrf_token %}
                                 <label for="from">From</label>
                                 <input type="text" id="from" name="fromDate">
@@ -30,7 +35,7 @@
                                 <input type="text" id="to" name="toDate">
                                 <input type="submit" id="date-sub-btn"/>
                             </form> -->
-
+                            
                         </div>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="index.html"><i class="feather icon-home"></i></a></li>
@@ -58,6 +63,13 @@
                                             {% if page_obj.has_previous %}
                                                 <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
                                             {% endif %}
+                                            {% for i in paginator.page_range %}
+                                            {% if page_obj.number == i %}
+                                              <li class="active page-link"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                                            {% else %}
+                                              <li><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                                            {% endif %}
+                                            {% endfor %}
                                             <span class="page-current">
                                                 <li class="page-item"><a class="page-link" href="#!">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</a></li>
                                             </span>
@@ -67,6 +79,8 @@
                                         </ul>
                                     </nav>
                                 {% endif %}
+                                <a class="btn btn-dark float-right" href="{% url 'upstaged_data:email-load' %}">Load data</a>
+
                             </div>
                             
                             <div class="card-block table-border-style">
@@ -74,13 +88,12 @@
                                     <table class="table table-hover">
                                         <thead>
                                             <tr>
-                                                
                                                 <th>Serial</th>
                                                 <th>Title</th>
                                                 <th>Email</th>
-                                                <th>Round</th>
-                                                <th>Game</th>
-              
+                                                <th>Updated at</th>
+                                                <th>Email Confirmed</th>
+                                                <th>Status</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -89,10 +102,29 @@
                                                     <td>{{forloop.counter0|add:page_obj.start_index }} </td>
                                                     <td>{{ user.name }}</td>
                                                     <td>{{ user.email }}</td>
-                                                    <td>{{ user.round }}</td>
-                                                    <td>{{ user.game }}</td>
+                                                    <td>{{ user.updated_at }}</td>
+                                                    <td>
+                                                        {% if user.email_confirmed %}
+                                                            <i class="fas fa-circle text-c-green f-10 m-r-15"></i>
+                                                            <span class="text-success">{{ user.email_confirmed }}</span>
+                                                        {% else %}
+                                                            <i class="fas fa-circle text-c-red f-10 m-r-15"></i>
+                                                            <span class="text-danger">{{ user.email_confirmed }}</span>
+                                                        {% endif %}
+                                                    </td>
 
-
+                                                    <td>
+                                                        {% if user.email_confirmed %}
+                                                            <span class="text-success">Valid Email</span>
+                                                        {% elif user.verification_pending and user.is_email_sent  %}
+                                                            <span class="text-warning">Verification Pending / Verificaiton email sent</a>
+                                                        {% elif user.invalid %}
+                                                            <span class="text-c-red">Invalid email</a>
+                                                        {% else %}
+                                                            <span class="text-warning">Verification Pending</a>
+                                                            <a class="label theme-bg text-white f-12" href="{% url 'upstaged_data:send_email_cnfrm' user.id %}">Send Activation Email</a>
+                                                        {% endif%}
+                                                    </td>
                                                 </tr>
                                             {% endfor %}
                                         </tbody>

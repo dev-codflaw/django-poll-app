@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts',
+    'upstaged_data',
     'import_export',
     # 'rest_framework',
 
@@ -67,7 +68,7 @@ WSGI_APPLICATION = 'app.wsgi.application'
 
 
 # Both below lines for custom user model
-AUTH_USER_MODEL = "accounts.User" 
+AUTH_USER_MODEL = "accounts.User"
 SITE_ID = 1
 
 

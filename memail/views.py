@@ -4,7 +4,6 @@ from django.core.mail import send_mail
 # Create your views here.
 from django.views.generic import TemplateView, FormView, UpdateView, DetailView
 from django.contrib import messages
-from import_export.models import Email_Dump
 from PIL import Image
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template

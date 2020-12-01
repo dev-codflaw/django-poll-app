@@ -35,84 +35,12 @@
 
                                 
                     <div class="row">
-                        <!--[ daily sales section ] start-->
-                        <div class="col-md-4 col-xl-2">
-                            <div class="card daily-sales">
-                                <div class="card-block">
-                                    <h6 class="mb-4">Total Votes</h6>
-                                    <div class="row d-flex align-items-center">
-                                        <div class="col-9">
-                                            <h3 class="f-w-300 d-flex align-items-center m-b-0">{{total_votes}}</h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--[ daily sales section ] end-->
-                        <!--[ Monthly  sales section ] starts-->
-                        <div class="col-md-4 col-xl-2">
-                            <div class="card Monthly-sales">
-                                <div class="card-block">
-                                    <h6 class="mb-4">Total Voters</h6>
-                                    <div class="row d-flex align-items-center">
-                                        <div class="col-9">
-                                            <h3 class="f-w-300 d-flex align-items-center  m-b-0">{{total_voters}}</h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--[ Monthly  sales section ] end-->
-                        <!--[ year  sales section ] starts-->
-                        <div class="col-md-4 col-xl-2">
-                            <div class="card yearly-sales">
-                                <div class="card-block">
-                                    <h6 class="mb-4">Authenticated Votes</h6>
-                                    <div class="row d-flex align-items-center">
-                                        <div class="col-9">
-                                            <h3 class="f-w-300 d-flex align-items-center  m-b-0">{{auth_votes}} ({{auth_votes_percent | floatformat}}%)</h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+            
+                    
+                        <div id="donutchart_votes" style="width: 600px; height: 350px;"></div>
 
-                        <div class="col-md-4 col-xl-2">
-                            <div class="card yearly-sales">
-                                <div class="card-block">
-                                    <h6 class="mb-4">Authenticated Voters</h6>
-                                    <div class="row d-flex align-items-center">
-                                        <div class="col-9">
-                                            <h3 class="f-w-300 d-flex align-items-center  m-b-0">{{auth_voters}} ({{auth_voters_percent | floatformat}}%)</h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-xl-2">
-                            <div class="card yearly-sales">
-                                <div class="card-block">
-                                    <h6 class="mb-4">Pending Voters</h6>
-                                    <div class="row d-flex align-items-center">
-                                        <div class="col-9">
-                                            <h3 class="f-w-300 d-flex align-items-center  m-b-0">{{verification_pending}} ({{pending_voters_percent | floatformat}}%)</h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-xl-2">
-                            <div class="card yearly-sales">
-                                <div class="card-block">
-                                    <h6 class="mb-4">Disqualified Voters</h6>
-                                    <div class="row d-flex align-items-center">
-                                        <div class="col-9">
-                                            <h3 class="f-w-300 d-flex align-items-center  m-b-0">{{invalid_voters}} ({{invalid_voters_percent | floatformat}}%)</h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <div id="donutchart_voters" style="width: 600px; height: 350px;"></div>
+
                         <!--[ year  sales section ] end-->
                         <!--[ Recent Users ] start-->
                         <div class="col-xl-12 col-md-12 m-b-30">
@@ -221,7 +149,7 @@
                             </div>
                         </div>
                         <!--[ Recent Users ] end-->
-                  
+
                    
                     </div>
                     <!-- [ Main Content ] end -->
@@ -234,7 +162,52 @@
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
+<script>
+    var auth_voters = "{{auth_voters}}";
+    var pending_voters = "{{verification_pending}}";
+    var disqualified_voters = "{{invalid_voters}}";
+    var total_voters = "{{total_voters}}";
+    var total_votes = "{{total_votes}}";
+    var auth_votes = "{{auth_votes}}";
+    
 
+</script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load("current", {packages:["corechart"]});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Voter', 'Percent'],
+          ['Auth Voters',     parseInt(auth_voters)],
+          ['Disqualified Voters',  parseInt(disqualified_voters)],
+          ['Pending Voters',      parseInt(pending_voters)],
 
+        ]);
 
+        var options = {
+          title: 'Voters : '+String(total_voters),
+          pieHole: 0.5,
+        };
+
+        var chart1 = new google.visualization.PieChart(document.getElementById('donutchart_voters'));
+        chart1.draw(data, options);
+
+        var data2 = google.visualization.arrayToDataTable([
+          ['Votes', 'Percent'],
+          ['Total Votes',     parseInt(total_votes)],
+          ['Auth Votes',  parseInt(auth_votes)],
+
+        ]);
+
+        var options2 = {
+          title: 'Votes : '+String(total_votes),
+          pieHole: 0.5,
+          slices: [{color: '#3366cc'}, {color: '#ff9900'}]
+        };
+
+        var chart2 = new google.visualization.PieChart(document.getElementById('donutchart_votes'));
+        chart2.draw(data2, options2);
+      }
+    </script>
 {% endblock javascripts %}

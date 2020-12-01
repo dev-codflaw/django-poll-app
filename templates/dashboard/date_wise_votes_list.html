@@ -1,0 +1,109 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Data-sheet {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+{% endblock stylesheets %}
+
+
+{% block content %}
+<div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <!-- [ breadcrumb ] start -->
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-12">
+                        <div class="page-header-title">
+                            <h5 class="m-b-10">Data Sheet</h5>
+                            <!-- {{fromDate}}
+                            {{toDate}} -->
+                            <form method="POST" action="{% url 'dashboard:date-wise-votes' %}">
+                               {% csrf_token %}
+                                <label for="from">From</label>
+                                <input type="text" id="from" name="dates"  value="11/20/2020 - 11/30/2020">
+
+                                <input type="submit" id="date-sub-btn"/>
+                            </form>
+
+                        </div>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index.html"><i class="feather icon-home"></i></a></li>
+                            <li class="breadcrumb-item"><a href="#!">Tables</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:">Basic Tables</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- [ breadcrumb ] end -->
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- [ Main Content ] start -->
+                <div class="row">
+                    <!-- [ Hover-table ] start -->
+                    <div class="col-xl-12">
+                        
+                        <div class="card">
+                            <div class="card-header">
+    
+                            </div>
+                            
+                            <div class="card-block table-border-style">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                
+                                                <th>Serial</th>
+                                                <th>Title</th>
+                                                <th>Email</th>
+                                                <th>Round</th>
+                                                <th>Game</th>
+              
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for obj in object_list %}
+                                                <tr>
+                                                    <td>{{forloop.counter }} </td>
+                                                    <td>{{ obj.name }}</td>
+                                                    <td>{{ obj.email }}</td>
+                                                    <td>{{ obj.round }}</td>
+                                                    <td>{{ obj.game }}</td>
+
+
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- [ Hover-table ] end -->
+
+                </div>
+                <!-- [ Main Content ] end -->
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script> -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+<script>
+  
+    $('input[name="dates"]').daterangepicker();
+
+</script>
+{% endblock javascripts %}
