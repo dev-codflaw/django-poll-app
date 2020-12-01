@@ -17,6 +17,8 @@ from upstaged_data.views import (
     IsEmailSendList,
     # IPAddressList,
     ip_address_list,
+    link_voter_datasheet,
+    send_bulk_email_confirmation,
 )
 
 
@@ -27,6 +29,10 @@ urlpatterns = [
     path('data-sheet/upload/', DataSheetUpload.as_view(), name="data-sheet-upload"),
 
     path('data-sheet/email/load/', load_unique_emails, name="email-load"),
+    path('data-sheet/email/bulk-send/', send_bulk_email_confirmation, name="send_bulk-email"),
+
+
+    path('data-sheet/email/load/', link_voter_datasheet, name="link-voter-datasheet"),
 
     path('email/voter/', VoterList.as_view(), name='unique-emails'),
     path('email/voter/verified/', VerifiedEmailList.as_view(), name='all-verified-emails'),

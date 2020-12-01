@@ -24,7 +24,6 @@ def find_valid_votes_team_wise(game_number, voted_for):
             pass
 
 
-
 def find_invalid_votes_team_wise(game_number, voted_for):
         try:
             p = ("SELECT COUNT (*) FROM datasheet "\
@@ -100,6 +99,23 @@ def total_pending_votes():
         except Exception as e:
             print(e) 
             pass
+
+def find_date_wise_votes(start_date, end_date):
+
+        try:
+            
+            Datasheet.objects.filter()
+
+            obj_list.extend(Datasheet.objects.filter(vote_time__contains=day.strftime('%Y-%m-%d')))
+
+            cursor = connection.cursor()
+            cursor.execute(p)
+            row = cursor.fetchone()
+            return row[0]
+        except Exception as e:
+            print(e) 
+            pass
+
 
 class Dashboard(View):
 
@@ -262,7 +278,6 @@ def date_wise_vote_list(request):
         context = {
             'object_list': obj_list
         }
-        # pp = pp.pprint(s)
 
         return render(request, 'dashboard/date_wise_votes_list.html', context)
     return render(request, 'dashboard/date_wise_votes_list.html', )

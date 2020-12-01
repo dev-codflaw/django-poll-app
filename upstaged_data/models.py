@@ -26,6 +26,7 @@ class Voter(models.Model):
     
 
 class Datasheet(models.Model):
+    # voter_id = models.ForeignKey(Voter, on_delete=models.DO_NOTHING, default=None, null=True)
     name = models.CharField(max_length=50)
     email = models.CharField(max_length=50)
     ip_address = models.CharField(max_length=20)

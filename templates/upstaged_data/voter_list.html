@@ -26,6 +26,7 @@
                             <a class="btn btn-success float-right" href="{% url 'upstaged_data:all-verified-emails' %}">Valid Emails</a>
                             <a class="btn btn-warning float-right" href="{% url 'upstaged_data:all-pending-emails' %}">Pending Verification</a>
                             <a class="btn btn-info float-right" href="{% url 'upstaged_data:verification-emails-list' %}">Send Emails</a>
+                            <a class="btn btn-info float-right" href="{% url 'upstaged_data:send_bulk-email' %}">Send Bulk Email</a>
                             <a class="btn btn-primary float-right" href="{% url 'upstaged_data:unique-emails' %}">All Emails</a>
                             <!-- <form method="GET" action="{% url 'upstaged_data:date-wise-emails' %}">
                                {% csrf_token %}
@@ -64,12 +65,12 @@
                                                 <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
                                             {% endif %}
                                             {% for i in paginator.page_range %}
-                                            {% if page_obj.number == i %}
+                                            <!-- {% if page_obj.number == i %}
                                               <li class="active page-link"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
                                             {% else %}
                                               <li><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
                                             {% endif %}
-                                            {% endfor %}
+                                            {% endfor %} -->
                                             <span class="page-current">
                                                 <li class="page-item"><a class="page-link" href="#!">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</a></li>
                                             </span>

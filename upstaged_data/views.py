@@ -156,7 +156,18 @@ class DataSheetListView(ListView):
     paginate_by = 10
     queryset = Datasheet.objects.all().order_by('name')
 
-
+def link_voter_datasheet(request):
+    vorter_list = Voter.objects.all()
+    if vorter_list is not None:
+        for v in vorter_list:
+            votes_list = Datasheet.objects.filter(email=v.email)
+            for vl in  votes_list:
+                vl.voter_id = v
+                vl.save()
+    else:
+        print(votes_list)
+    
+    # return redirect('upstaged_data:link-voter-datasheet')
 
 def load_unique_emails(request):
     uni_email_obj = list(Datasheet.objects.all().order_by('email').distinct('email'))
@@ -169,19 +180,17 @@ def load_unique_emails(request):
                 name=uobj.name,
                 email=uobj.email,
             )
+            # v = Voter(name=uobj.name, email=uobj.email)
+            # v.save()
             new_entry = new_entry +1
         else:
             skip_count = skip_count +1
-
-        # _, created = Voter.objects.update_or_create(
-        #     name=uobj.name,
-        #     email=uobj.email)
             
-    
     str_msg = 'New entry '+ str(new_entry)
     str_msg = 'Skip entry '+ str(skip_count)
     messages.success(request, str_msg)
     return redirect('upstaged_data:unique-emails')
+
 
 
 class DateWiseEmailList(ListView):
@@ -221,7 +230,17 @@ class DateWiseEmailList(ListView):
         context.update(kwargs)
         return super().get_context_data(**context)
 
-    
+
+
+def send_bulk_email_confirmation(request):
+    new_voter_list = Voter.objects.filter(verification_pending=True, is_email_sent=False, email_sent=0)[:10]
+    for obj in new_voter_list:
+        try:
+            result = send_email_confirmation_link(request, obj ,obj.email)
+        except Exception as e:
+            print(e)
+            pass  
+    return redirect('upstaged_data:verification-emails-list')  
 
     
 def send_email_confirmation(request, pk):

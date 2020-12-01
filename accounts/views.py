@@ -189,7 +189,7 @@ def send_email_confirmation_link(request, obj, to_email_address):
         return HttpResponse('Invalid header found.')
     
 
-    messages.success(request, 'Account activation link sent on email, Please Check!')
+    messages.success(request, 'Account activation link sent on '+str(to_email_address)+'successfully!' )
     return True
 
 
