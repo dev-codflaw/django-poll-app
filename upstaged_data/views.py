@@ -233,7 +233,7 @@ class DateWiseEmailList(ListView):
 
 
 def send_bulk_email_confirmation(request):
-    new_voter_list = Voter.objects.filter(verification_pending=True, is_email_sent=False, email_sent=0)[:100]
+    new_voter_list = Voter.objects.filter(verification_pending=True, is_email_sent=False, email_sent=0)[:50]
     for obj in new_voter_list:
         try:
             result = send_email_confirmation_link(request, obj ,obj.email)
