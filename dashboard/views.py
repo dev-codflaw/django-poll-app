@@ -70,6 +70,36 @@ def total_auth_votes():
             print(e) 
             pass
 
+def total_invalid_votes():
+        try: 
+            p = ("SELECT COUNT (*) FROM datasheet "\
+                +"JOIN voter ON datasheet.email = voter.email "\
+                    +"WHERE voter.invalid=True")
+                        
+            cursor = connection.cursor()
+            cursor.execute(p)
+            row = cursor.fetchone()
+            return row[0]
+
+        except Exception as e:
+            print(e) 
+            pass
+    
+
+def total_pending_votes():
+        try: 
+            p = ("SELECT COUNT (*) FROM datasheet "\
+                +"JOIN voter ON datasheet.email = voter.email "\
+                    +"WHERE voter.verification_pending=True")
+                        
+            cursor = connection.cursor()
+            cursor.execute(p)
+            row = cursor.fetchone()
+            return row[0]
+
+        except Exception as e:
+            print(e) 
+            pass
 
 class Dashboard(View):
 
@@ -88,6 +118,8 @@ class Dashboard(View):
             'last_status_updated_dashboard':s['updated_at'],
             'total_votes':Datasheet.objects.filter(round='Semifinals').count(),
             'auth_votes': total_auth_votes(),
+            'invalid_votes': total_invalid_votes(),
+            'dis_votes': total_pending_votes(),
             'total_voters':total_voters ,
             'auth_voters':auth_voters,
             'verification_pending':verification_pending,
@@ -220,7 +252,7 @@ def date_wise_vote_list(request):
         # print(edate)
 
         delta = edate - sdate       # as timedelta
-
+    
         obj_list = []
         for i in range(delta.days + 1):
             day = sdate + timedelta(days=i)

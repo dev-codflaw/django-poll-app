@@ -169,6 +169,8 @@
     var total_voters = "{{total_voters}}";
     var total_votes = "{{total_votes}}";
     var auth_votes = "{{auth_votes}}";
+    var invalid_votes = "{{invalid_votes}}";
+    var dis_votes = "{{dis_votes}}";
     
 
 </script>
@@ -177,33 +179,37 @@
       google.charts.load("current", {packages:["corechart"]});
       google.charts.setOnLoadCallback(drawChart);
       function drawChart() {
+        // for voters chart
         var data = google.visualization.arrayToDataTable([
           ['Voter', 'Percent'],
           ['Auth Voters',     parseInt(auth_voters)],
-          ['Disqualified Voters',  parseInt(disqualified_voters)],
           ['Pending Voters',      parseInt(pending_voters)],
+          ['Disqualified Voters',  parseInt(disqualified_voters)],
 
         ]);
 
         var options = {
           title: 'Voters : '+String(total_voters),
           pieHole: 0.5,
+          slices: [{color: '#3366cc'},  {color: '#ff9900'}, {color: '#dc3912'},]
         };
 
         var chart1 = new google.visualization.PieChart(document.getElementById('donutchart_voters'));
         chart1.draw(data, options);
 
+        // for votes chart
         var data2 = google.visualization.arrayToDataTable([
           ['Votes', 'Percent'],
-          ['Total Votes',     parseInt(total_votes)],
           ['Auth Votes',  parseInt(auth_votes)],
+          ['Pending Votes',  parseInt(dis_votes)],
+          ['Disqualified Votes',  parseInt(invalid_votes)],
 
         ]);
 
         var options2 = {
           title: 'Votes : '+String(total_votes),
           pieHole: 0.5,
-          slices: [{color: '#3366cc'}, {color: '#ff9900'}]
+          slices: [{color: '#3366cc'},  {color: '#ff9900'}, {color: '#dc3912'},]
         };
 
         var chart2 = new google.visualization.PieChart(document.getElementById('donutchart_votes'));

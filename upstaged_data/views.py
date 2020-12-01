@@ -228,6 +228,6 @@ def send_email_confirmation(request, pk):
     obj = Voter.objects.get(pk=pk)
     result = send_email_confirmation_link(request, obj, obj.email)
     if result:
-        return redirect('upstaged_data:unique-emails')
+        return redirect('upstaged_data:verification-emails-list')
     
-    return redirect('upstaged_data:unique-emails')
+    return redirect('upstaged_data:verification-emails-list')
