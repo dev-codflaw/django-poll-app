@@ -42,7 +42,7 @@ class LoginView(View):
     #when hit login url then call get method
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            return redirect('dashboard')
+            return redirect('dashboard:dashboard')
         else:
             form = SignInForm(request.POST)
             return render(request, 'accounts/login.html', {'form': form})
@@ -62,7 +62,7 @@ class LoginView(View):
                     if user is not None:    
                         # messages.warning(request,'User Authenticated!' )
                         login(request, user)
-                        return redirect('home')
+                        return redirect('dashboard:dashboard')
                     else:
                         messages.warning(request,'User Not Authenticated! Please varify the Email!' )
                 else:

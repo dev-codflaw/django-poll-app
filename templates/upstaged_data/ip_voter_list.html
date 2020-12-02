@@ -61,7 +61,7 @@
                                                     <td>{{ obj.name }}</td>
                                                     <td>{{ obj.email }}</td>
                                                     <td>
-                                                        {% if obj.email.confirmed %}
+                                                        {% if obj.email_confirmed %}
                                                         <span class="text-success">Valid</span>
                                                         {% elif obj.invalid %}
                                                         <span class="text-danger">Invalid</span>

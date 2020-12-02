@@ -12,7 +12,8 @@ from accounts.views import send_email_confirmation_link
 from datetime import datetime
 from django.utils.timezone import make_aware
 from django.db.models import Count
-
+from upstaged_data.resources import VoterResource
+from django.db import connection
 
 class EmailUpload(FormView):
 
@@ -170,6 +171,37 @@ class IPAddressList(ListView):
         print(num)
         queryset = Datasheet.objects.values('ip_address',).annotate(Count('ip_address')).order_by('ip_address__count').filter(ip_address__count__gt=num)
         return render(request, 'upstaged_data/ip_address_list.html', context={'object_list': queryset})
+
+def export_voters_datas(request):
+    voter_resource = VoterResource()
+    dataset = voter_resource.export()
+    # dataset.csv
+    response = HttpResponse(dataset.csv, content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="voters.csv"'
+    return response
+    # return redirect( 'upstaged_data:unique-emails')
+
+
+def export_voters_data(request):
+    # query_set = "Datasheet.objects.all()"
+    p = "SELECT * FROM datasheet JOIN voter ON datasheet.email = voter.email"
+    cursor = connection.cursor()
+    cursor.execute(p)
+    query_set = cursor.fetchall()
+    # print(query_set)
+    output = []
+    response = HttpResponse (content_type='text/csv')
+    writer = csv.writer(response)
+    #Header
+    writer.writerow(['Name', 'Email', 'IP Address', 'Group', 'Round','Game', 'Voted For', 'Valid', 'Pending', 'Invalid'])
+    for user in query_set:
+        output.append([user[1], user[2], user[3], user[4], user[5], user[6], user[7], user[15], user[16],user[14],])
+    #CSV Data
+    writer.writerows(output)
+    response['Content-Disposition'] = 'attachment; filename="voters.csv"'
+
+    return response
+
 
 def ip_address_list(request):
     # ip_list = list(Datasheet.objects.values("ip_address").order_by('the_count').annotate(the_count=Count('ip_address')))

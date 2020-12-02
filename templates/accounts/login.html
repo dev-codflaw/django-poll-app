@@ -20,11 +20,13 @@
                     <h3 class="mb-4">Login</h3>
 
                     <span class="mb-0 text-muted">
-                        {% if msg %}
-                            {{ msg | safe }}
-                        {% else %}
-                            Default Credentials: test / ApS12_ZZs8
-                        {% endif %} 
+                        {% if messages %}
+                        {% for message in messages %}
+                            <div {% if message.tags %} class="float-right text-{{message.tags}} mb-1" {% endif %}>
+                                <strong>{{message|safe}}</strong>
+                            </div>
+                        {% endfor %}
+                        {% endif %}
                     </span>
 
                     <br />
