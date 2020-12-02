@@ -119,17 +119,13 @@ def find_date_wise_votes(obj_list):
                 else:
                     pass
             
-            print(date_wise_auth_votes)
-            print(date_wise_dis_votes)
-            print(date_wise_pending_votes)
+            # print(date_wise_auth_votes)
+            # print(date_wise_dis_votes)
+            # print(date_wise_pending_votes)
             date_wise_total_votes = date_wise_auth_votes + date_wise_dis_votes + date_wise_pending_votes
-            date_wise_data_dict = {
-                'date_wise_total_votes': date_wise_total_votes,
-                'date_wise_auth_votes': date_wise_auth_votes,
-                'date_wise_dis_votes': date_wise_dis_votes,
-                'date_wise_pending_votes': date_wise_pending_votes,
-            }
-            return date_wise_data_dict
+            date_wise_vote_list =[date_wise_total_votes, date_wise_auth_votes, date_wise_dis_votes, date_wise_pending_votes,]
+
+            return date_wise_vote_list
         except Exception as e:
             print(e) 
             pass
@@ -146,10 +142,12 @@ def dashboard_data():
     context = {
 
         'last_status_updated_dashboard':s.updated_at,
+
         'total_votes':Datasheet.objects.filter(round='Semifinals').count(),
         'auth_votes': total_auth_votes(),
-        'invalid_votes': total_invalid_votes(),
-        'dis_votes': total_pending_votes(),
+        'dis_votes': total_invalid_votes(),
+        'pending_votes': total_pending_votes(),
+
         'total_voters':total_voters ,
         'auth_voters':auth_voters,
         'verification_pending':verification_pending,
@@ -286,7 +284,7 @@ class Dashboard(View):
         
         sd = str(x[0]).split("/")
         ed = str(x[1]).split("/")
-        print(sd)
+        # print(sd)
         start_date = sd[2]+'-'+sd[0]+'-'+sd[1]
         # print(type(str(x[0])))
         sdate = date(int(sd[2]), int(sd[0]), int(sd[1]))   # start date date format -  # 2020-11-23
@@ -304,7 +302,12 @@ class Dashboard(View):
             # print(day)
             vts_obj_list.extend(Datasheet.objects.filter(vote_time__contains=day.strftime('%Y-%m-%d')))
 
-        context['date_wise_data_dict'] = find_date_wise_votes(vts_obj_list)
+        data = find_date_wise_votes(vts_obj_list)
+        # print(data)
+        context['total_votes'] = data[0]
+        context['auth_votes'] =  data[1]
+        context['dis_votes'] =  data[2]
+        context['pending_votes'] =  data[3]
         # print(len(obj_list))
 
 
@@ -325,7 +328,7 @@ def date_wise_vote_list(request):
         
         sd = str(x[0]).split("/")
         ed = str(x[1]).split("/")
-        print(sd)
+        # print(sd)
         start_date = sd[2]+'-'+sd[0]+'-'+sd[1]
         # print(type(str(x[0])))
         sdate = date(int(sd[2]), int(sd[0]), int(sd[1]))   # start date date format -  # 2020-11-23

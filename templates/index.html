@@ -42,9 +42,9 @@
                         </div>
                     </div>      
                     <div class="row">
-                        <div id="donutchart_votes" style="width: 400px; height: 350px;"></div>
+                        <div id="donutchart_votes" style="width: 600px; height: 350px;"></div>
 
-                        <div id="donutchart_voters" style="width: 400px; height: 350px;"></div>
+                        <div id="donutchart_voters" style="width: 600px; height: 350px;"></div>
 
                         <div id="donutchart_votes_datewise" style="width: 400px; height: 350px;"></div>
 
@@ -172,15 +172,11 @@
     var pending_voters = "{{verification_pending}}";
     var disqualified_voters = "{{invalid_voters}}";
     var total_voters = "{{total_voters}}";
+
     var total_votes = "{{total_votes}}";
     var auth_votes = "{{auth_votes}}";
-    var invalid_votes = "{{invalid_votes}}";
+    var pending_votes = "{{pending_votes}}";
     var dis_votes = "{{dis_votes}}";
-
-    var date_wise_total_votes = "{{date_wise_data_dict.date_wise_total_votes}}";
-    var date_wise_auth_votes = "{{date_wise_data_dict.date_wise_auth_votes}}";
-    var date_wise_dis_votes = "{{date_wise_data_dict.date_wise_dis_votes}}";
-    var date_wise_pending_votes = "{{date_wise_data_dict.date_wise_pending_votes}}";
     
 
 </script>
@@ -220,8 +216,8 @@
         var data2 = google.visualization.arrayToDataTable([
           ['Votes', 'Percent'],
           ['Auth Votes',  parseInt(auth_votes)],
-          ['Pending Votes',  parseInt(dis_votes)],
-          ['Disqualified Votes',  parseInt(invalid_votes)],
+          ['Pending Votes',  parseInt(pending_votes)],
+          ['Disqualified Votes',  parseInt(dis_votes)],
 
         ]);
 
@@ -234,23 +230,6 @@
         var chart2 = new google.visualization.PieChart(document.getElementById('donutchart_votes'));
         chart2.draw(data2, options2);
 
-        // for votes chart date wise
-        var data3 = google.visualization.arrayToDataTable([
-          ['Votes', 'Percent'],
-          ['Auth Votes',  parseInt(date_wise_auth_votes)],
-          ['Pending Votes',  parseInt(date_wise_pending_votes)],
-          ['Disqualified Votes',  parseInt(date_wise_dis_votes)],
-
-        ]);
-
-        var options3 = {
-          title: 'Votes : '+String(date_wise_total_votes),
-          pieHole: 0.5,
-          slices: [{color: '#3366cc'},  {color: '#ff9900'}, {color: '#dc3912'},]
-        };
-
-        var chart3 = new google.visualization.PieChart(document.getElementById('donutchart_votes_datewise'));
-        chart3.draw(data3, options3);
 
       }
     </script>

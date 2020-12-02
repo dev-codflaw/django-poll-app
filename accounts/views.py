@@ -155,7 +155,7 @@ def activate(request, uidb64, token):
         # login(request, user)
         # return redirect('home')
     else:
-        context = {'text_msg':'The confirmation link was invalid, possibly because it has already been used.'}
+        context = {'text_msg':'Your email is already verified. Thanks.'}
         return render(request, 'accounts/simple_message_page.html', context)
 
 
@@ -212,5 +212,5 @@ def email_activate(request, oidb64, token):
         # login(request, user)
         # return redirect('home')
     else:
-        context = {'text_msg':'The link is invalid, possibly because it has already been used.'}
+        context = {'text_msg':'Your email is already verified. Thanks.'}
         return render(request, 'accounts/email_confirm_land_msg.html', context)

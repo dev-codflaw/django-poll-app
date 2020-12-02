@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.views.generic import FormView, ListView
 # Create your views here.
 # one parameter named request
-from upstaged_data.models import  Voter, Datasheet
+from upstaged_data.models import  Voter, Datasheet, FakeDatasheet
 from accounts.views import send_email_confirmation_link
 
 from datetime import datetime
@@ -86,9 +86,9 @@ class DataSheetUpload(FormView):
         io_string = io.StringIO(data_set)
         next(io_string)
         create_count = 0
-        skip_count = 0
+        fake_count = 0
         for column in csv.reader(io_string, delimiter=',', quotechar="|"): 
-            if not Datasheet.objects.filter(name=column[0].strip(), email=column[1], game=column[5]).exists():
+            if not Datasheet.objects.filter(name=column[0].strip(), email=column[1].strip(), game=column[5].strip(), voted_for=column[6].strip()).exists():
                 Datasheet.objects.create(
                     name = column[0].strip(),
                     email = column[1].strip(),
@@ -100,11 +100,23 @@ class DataSheetUpload(FormView):
                     vote_time = column[7].strip(),
                 )
                 create_count = create_count + 1
+                # print(create_count)
             else:
-                skip_count = skip_count + 1
+                FakeDatasheet.objects.create(
+                    name = column[0].strip(),
+                    email = column[1].strip(),
+                    ip_address = column[2].strip(),
+                    group = column[3].strip(),
+                    round = column[4].strip(),
+                    game = column[5].strip(),
+                    voted_for = column[6].strip(),
+                    vote_time = column[7].strip(),
+                )
+                fake_count = fake_count + 1
+                # print(skip_count)
 
-        print(create_count)
-        print(skip_count)
+        # print(create_count)
+        # print(fake_count)
 
         messages.warning(request, 'message from post function')
         return render(request, 'upstaged_data/data_sheet_upload.html')
