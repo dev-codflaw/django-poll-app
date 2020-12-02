@@ -15,10 +15,11 @@ from upstaged_data.views import (
     DataSheetListView,
     load_unique_emails,
     IsEmailSendList,
-    # IPAddressList,
+    IPAddressList,
     ip_address_list,
     link_voter_datasheet,
     send_bulk_email_confirmation,
+    IPVoterList,
 )
 
 
@@ -40,9 +41,10 @@ urlpatterns = [
     path('email/voter/invalid/', InvalidEmailList.as_view(), name='all-invalid-emails'),
     path('email/voter/verification/email/', IsEmailSendList.as_view(), name='verification-emails-list'),
 
-    # path('email/voter/ip-address/', IPAddressList.as_view(), name='ip-address-list'),
+    path('voter/ip-address/', IPAddressList.as_view(), name='ip-address-list'),
+    path('voter/ip-address/voter/', IPVoterList.as_view(), name='ip-address-voters'),
 
-    path('email/voter/ip-address/', ip_address_list, name='ip-address-list'),
+    # path('email/voter/ip-address/', ip_address_list, name='ip-address-list'),
 
     path('data-sheet/', DataSheetListView.as_view(), name='data-sheet'),
 
@@ -51,3 +53,4 @@ urlpatterns = [
 
 
 ]
+

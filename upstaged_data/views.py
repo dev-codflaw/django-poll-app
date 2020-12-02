@@ -138,16 +138,35 @@ class InvalidEmailList(ListView):
     paginate_by = 10
     queryset = Voter.objects.filter(invalid=True, email_confirmed=False).order_by('email')
 
+class IPVoterList(ListView):
+    template_name = 'upstaged_data/ip_voter_list.html'
+    model = Datasheet
+    # queryset = Datasheet.objects.values('email', 'ip_address').distinct().filter(ip_address='98.200.166.91')
 
-# IP Address - linting
-# class IPAddressList(ListView):
-#     template_name = 'ip_address_list.html'
-#     model = Datasheet
-#     queryset = Datasheet.objects.values('ip_address').order_by('ip_address').annotate(the_count=Count('ip_address'))
+    def get(self, request, *args, **kwargs):
+        print(request.GET['ip'])
+        return render(request, 'upstaged_data/ip_voter_list.html')
+
+    def post(self, request, *args, **kwargs):
+        # print(request.POST['ip'])
+        queryset = Datasheet.objects.values('email', 'ip_address').distinct().filter(ip_address=request.POST['ip'])
+        return render(request, 'upstaged_data/ip_voter_list.html', context={'object_list': queryset})
+
+# IP Address - listing
+class IPAddressList(ListView):
+    template_name = 'upstaged_data/ip_address_list.html'
+    model = Datasheet
+    queryset = Datasheet.objects.values('ip_address').annotate(Count('ip_address')).order_by('ip_address__count').filter(ip_address__count__gt=4)
+
+    def post(self, request, *args, **kwargs):
+        num = int(request.POST['num'])
+        print(num)
+        queryset = Datasheet.objects.values('ip_address',).annotate(Count('ip_address')).order_by('ip_address__count').filter(ip_address__count__gt=num)
+        return render(request, 'upstaged_data/ip_address_list.html', context={'object_list': queryset})
 
 def ip_address_list(request):
-    ip_list = list(Datasheet.objects.values("ip_address").order_by('the_count').annotate(the_count=Count('ip_address')))
-    # ip_list = [{'ip_address': '100.1.131.190', 'the_count': 4}, {'ip_address': '100.12.91.148', 'the_count': 4},]
+    # ip_list = list(Datasheet.objects.values("ip_address").order_by('the_count').annotate(the_count=Count('ip_address')))
+    ip_list = Datasheet.objects.values('ip_address').annotate(Count('ip_address')).order_by('ip_address__count').filter(ip_address__count__gt=4)
     return render(request, 'upstaged_data/ip_address_list.html', context={'object_list': ip_list})
 
 # Data Sheet Copy - linting
@@ -233,7 +252,7 @@ class DateWiseEmailList(ListView):
 
 
 def send_bulk_email_confirmation(request):
-    new_voter_list = Voter.objects.filter(verification_pending=True, is_email_sent=False, email_sent=0)[:50]
+    new_voter_list = Voter.objects.filter(verification_pending=True, is_email_sent=False, email_sent=0)[:30]
     for obj in new_voter_list:
         try:
             result = send_email_confirmation_link(request, obj ,obj.email)

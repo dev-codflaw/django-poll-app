@@ -30,16 +30,23 @@
                     <div class="card">
                         <div class="card-header">
                             <h5>Overview</h5>
+                            <div class="float-right">
+                                <form method="POST" action="{% url 'dashboard:dashboard' %}">
+                                    {% csrf_token %}
+                                     <label for="from">From</label>
+                                     <input type="text" id="from" name="dates"  value="11/20/2020 - 11/30/2020">
+     
+                                     <input class="btn btn-dark" type="submit" id="date-sub-btn" value="View Results"/>
+                                 </form>
+                            </div>
                         </div>
-                    </div>
-
-                                
+                    </div>      
                     <div class="row">
-            
-                    
-                        <div id="donutchart_votes" style="width: 600px; height: 350px;"></div>
+                        <div id="donutchart_votes" style="width: 400px; height: 350px;"></div>
 
-                        <div id="donutchart_voters" style="width: 600px; height: 350px;"></div>
+                        <div id="donutchart_voters" style="width: 400px; height: 350px;"></div>
+
+                        <div id="donutchart_votes_datewise" style="width: 400px; height: 350px;"></div>
 
                         <!--[ year  sales section ] end-->
                         <!--[ Recent Users ] start-->
@@ -149,8 +156,6 @@
                             </div>
                         </div>
                         <!--[ Recent Users ] end-->
-
-                   
                     </div>
                     <!-- [ Main Content ] end -->
                 </div>
@@ -171,7 +176,21 @@
     var auth_votes = "{{auth_votes}}";
     var invalid_votes = "{{invalid_votes}}";
     var dis_votes = "{{dis_votes}}";
+
+    var date_wise_total_votes = "{{date_wise_data_dict.date_wise_total_votes}}";
+    var date_wise_auth_votes = "{{date_wise_data_dict.date_wise_auth_votes}}";
+    var date_wise_dis_votes = "{{date_wise_data_dict.date_wise_dis_votes}}";
+    var date_wise_pending_votes = "{{date_wise_data_dict.date_wise_pending_votes}}";
     
+
+</script>
+<!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script> -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+<script>
+  
+    $('input[name="dates"]').daterangepicker();
 
 </script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -214,6 +233,25 @@
 
         var chart2 = new google.visualization.PieChart(document.getElementById('donutchart_votes'));
         chart2.draw(data2, options2);
+
+        // for votes chart date wise
+        var data3 = google.visualization.arrayToDataTable([
+          ['Votes', 'Percent'],
+          ['Auth Votes',  parseInt(date_wise_auth_votes)],
+          ['Pending Votes',  parseInt(date_wise_pending_votes)],
+          ['Disqualified Votes',  parseInt(date_wise_dis_votes)],
+
+        ]);
+
+        var options3 = {
+          title: 'Votes : '+String(date_wise_total_votes),
+          pieHole: 0.5,
+          slices: [{color: '#3366cc'},  {color: '#ff9900'}, {color: '#dc3912'},]
+        };
+
+        var chart3 = new google.visualization.PieChart(document.getElementById('donutchart_votes_datewise'));
+        chart3.draw(data3, options3);
+
       }
     </script>
 {% endblock javascripts %}

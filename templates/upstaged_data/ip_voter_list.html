@@ -19,14 +19,8 @@
                 <div class="row align-items-center">
                     <div class="col-md-12">
                         <div class="page-header-title">
-                            <h5 class="m-b-10">IP Data Sheet</h5>
-                            <div>
-                                <form method="POST" >
-                                    {% csrf_token %}
-                                    <input type="text" name='num'/>
-                                    <input type="submit"/>
-                                </form>
-                            </div>
+                            <h5 class="m-b-10">IP Voter List</h5>
+
                         </div>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="index.html"><i class="feather icon-home"></i></a></li>
@@ -55,8 +49,7 @@
                                                 
                                                 <th>Serial No</th>
                                                 <th>IP</th>
-                                                <th>Count</th>
-                                                <th>Action</th>
+                                                <th>Email</th>
               
                                             </tr>
                                         </thead>
@@ -64,15 +57,8 @@
                                             {% for obj in object_list %}
                                                 <tr>
                                                     <td>{{ forloop.counter }}</td>
-                                                    <td><a href="{% url 'upstaged_data:ip-address-voters' %}{{ obj.ip_address }}">{{ obj.ip_address }}</a></td>
-                                                    <td>{{ obj.ip_address__count }}</td>
-                                                    <td>
-                                                        <form method="POST" action="{% url 'upstaged_data:ip-address-voters' %}">
-                                                            {% csrf_token %}
-                                                            <input type="hidden" name="ip" value="{{ obj.ip_address }}"/>
-                                                            <input type="submit"/>
-                                                        </form>
-                                                    </td>
+                                                    <td>{{ obj.ip_address }}</td>
+                                                    <td>{{ obj.email }}</td>
 
 
                                                 </tr>

@@ -166,7 +166,7 @@ def send_email_confirmation_link(request, obj, to_email_address):
     """ Below code for email activation """
     
     current_site = get_current_site(request)
-    subject = 'Email verification for '+ current_site.name
+    subject = 'Email verification for UpStaged Tournament'
     html_content = render_to_string('accounts/email/email_confirmation_template.html',
     {
         'obj': obj,
