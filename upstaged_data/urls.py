@@ -21,6 +21,7 @@ from upstaged_data.views import (
     send_bulk_email_confirmation,
     IPVoterList,
     export_voters_data,
+    IPVoterAction,
 )
 
 
@@ -44,6 +45,7 @@ urlpatterns = [
 
     path('voter/ip-address/', login_required(IPAddressList.as_view()), name='ip-address-list'),
     path('voter/ip-address/voter/', login_required(IPVoterList.as_view()), name='ip-address-voters'),
+    path('voter/ip-address/voter/action/', login_required(IPVoterAction.as_view()), name='ip-voters-action'),
 
     path('voter/export/', login_required(export_voters_data), name='export-voters'),
 

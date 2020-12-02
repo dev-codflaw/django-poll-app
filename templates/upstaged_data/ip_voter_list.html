@@ -51,6 +51,7 @@
                                                 <th>Name</th>
                                                 <th>Email</th>
                                                 <th>Status</th>
+                                                <th>Action</th>
               
                                             </tr>
                                         </thead>
@@ -70,6 +71,18 @@
                                                         {% else %}
                                                         <span class="text-dark">Not Availble</span>
                                                         {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        <form method="POST" action="{% url 'upstaged_data:ip-voters-action'%}">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="voter_email" value="{{ obj.email }}"/>
+                                                        <select name="v_action" id="vact">
+                                                            <option value="">----------</option>
+                                                            <option value="valid">Make Valid</option>
+                                                            <option value="invalid">Make Invalid</option>
+                                                          </select>
+                                                          <input type="submit" value="Go"/>
+                                                        </form>
                                                     </td>
 
 

@@ -135,7 +135,7 @@ def find_date_wise_votes(obj_list):
             pass
 
 def dashboard_data():
-    s = Datasheet.objects.values('updated_at').order_by('id')[0]
+    s = Datasheet.objects.latest('updated_at')
     total_voters = Voter.objects.all().count()
     auth_voters = Voter.objects.filter(email_confirmed=True).count()
     verification_pending = Voter.objects.filter(email_confirmed=False, verification_pending=True, invalid=False).count()
@@ -145,7 +145,7 @@ def dashboard_data():
 
     context = {
 
-        'last_status_updated_dashboard':s['updated_at'],
+        'last_status_updated_dashboard':s.updated_at,
         'total_votes':Datasheet.objects.filter(round='Semifinals').count(),
         'auth_votes': total_auth_votes(),
         'invalid_votes': total_invalid_votes(),

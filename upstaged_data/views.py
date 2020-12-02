@@ -139,6 +139,30 @@ class InvalidEmailList(ListView):
     paginate_by = 10
     queryset = Voter.objects.filter(invalid=True, email_confirmed=False).order_by('email')
 
+
+class IPVoterAction(ListView):
+
+    def get(self, request, *args, **kwargs):
+        # print(request.GET['ip'])
+        return render(request, 'upstaged_data/ip_voter_list.html')
+
+    def post(self, request, *args, **kwargs):
+        # print(request.POST['v_action'])
+        # print(request.POST['voter_email'])
+        # messages.warning(request, 'Test message')
+        if request.POST['v_action'] == 'valid':
+            valid_act = True
+            invalid_act = False
+        if request.POST['v_action'] == 'invalid':
+            valid_act = False
+            invalid_act = True
+        action_source = 'by User - '+str(request.user.email)
+        # print(action_source)
+        # print(valid_act)
+        # print(invalid_act)
+        Voter.objects.filter(email=request.POST['voter_email']).update(email_confirmed=valid_act, invalid=invalid_act, verification_pending=False, email_verification_source=action_source)
+        return redirect('upstaged_data:ip-address-list')
+
 class IPVoterList(ListView):
     template_name = 'upstaged_data/ip_voter_list.html'
     model = Datasheet
@@ -172,7 +196,7 @@ class IPAddressList(ListView):
         queryset = Datasheet.objects.values('ip_address',).annotate(Count('ip_address')).order_by('ip_address__count').filter(ip_address__count__gt=num)
         return render(request, 'upstaged_data/ip_address_list.html', context={'object_list': queryset})
 
-def export_voters_datas(request):
+def export_voters_datas(request): # not active 
     voter_resource = VoterResource()
     dataset = voter_resource.export()
     # dataset.csv
@@ -193,9 +217,17 @@ def export_voters_data(request):
     response = HttpResponse (content_type='text/csv')
     writer = csv.writer(response)
     #Header
-    writer.writerow(['Name', 'Email', 'IP Address', 'Group', 'Round','Game', 'Voted For', 'Valid', 'Pending', 'Invalid'])
+    writer.writerow(['Name', 'Email', 'IP Address', 'Group', 'Round','Game', 'Voted For', 'Status'])
     for user in query_set:
-        output.append([user[1], user[2], user[3], user[4], user[5], user[6], user[7], user[15], user[16],user[14],])
+        if user[15]:
+            status = 'Valid'
+        elif user[16]:
+            status = 'Invalid'
+        elif user[14]:
+            status = 'Pending'
+        else:
+            status = 'Not Available'
+        output.append([user[1], user[2], user[3], user[4], user[5], user[6], user[7], status,])
     #CSV Data
     writer.writerows(output)
     response['Content-Disposition'] = 'attachment; filename="voters.csv"'
