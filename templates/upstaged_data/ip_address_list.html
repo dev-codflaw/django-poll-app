@@ -64,13 +64,13 @@
                                             {% for obj in object_list %}
                                                 <tr>
                                                     <td>{{ forloop.counter }}</td>
-                                                    <td><a href="{% url 'upstaged_data:ip-address-voters' %}{{ obj.ip_address }}">{{ obj.ip_address }}</a></td>
+                                                    <td>{{ obj.ip_address }}</td>
                                                     <td>{{ obj.ip_address__count }}</td>
                                                     <td>
                                                         <form method="POST" action="{% url 'upstaged_data:ip-address-voters' %}">
                                                             {% csrf_token %}
                                                             <input type="hidden" name="ip" value="{{ obj.ip_address }}"/>
-                                                            <input type="submit"/>
+                                                            <input type="submit" value="View Details"/>
                                                         </form>
                                                     </td>
 

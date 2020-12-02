@@ -48,8 +48,9 @@
                                             <tr>
                                                 
                                                 <th>Serial No</th>
-                                                <th>IP</th>
+                                                <th>Name</th>
                                                 <th>Email</th>
+                                                <th>Status</th>
               
                                             </tr>
                                         </thead>
@@ -57,8 +58,19 @@
                                             {% for obj in object_list %}
                                                 <tr>
                                                     <td>{{ forloop.counter }}</td>
-                                                    <td>{{ obj.ip_address }}</td>
+                                                    <td>{{ obj.name }}</td>
                                                     <td>{{ obj.email }}</td>
+                                                    <td>
+                                                        {% if obj.email.confirmed %}
+                                                        <span class="text-success">Valid</span>
+                                                        {% elif obj.invalid %}
+                                                        <span class="text-danger">Invalid</span>
+                                                        {% elif obj.verification_pending %}
+                                                        <span class="text-warning">Pending</span>
+                                                        {% else %}
+                                                        <span class="text-dark">Not Availble</span>
+                                                        {% endif %}
+                                                    </td>
 
 
                                                 </tr>

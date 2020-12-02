@@ -149,8 +149,15 @@ class IPVoterList(ListView):
 
     def post(self, request, *args, **kwargs):
         # print(request.POST['ip'])
-        queryset = Datasheet.objects.values('email', 'ip_address').distinct().filter(ip_address=request.POST['ip'])
-        return render(request, 'upstaged_data/ip_voter_list.html', context={'object_list': queryset})
+        # queryset = Datasheet.objects.filter(ip_address=request.POST['ip']).order_by('email').distinct('email')
+        queryset = Datasheet.objects.values('email').distinct().filter(ip_address=request.POST['ip'])
+        # print(list(queryset))
+        v = []
+        for vo in queryset:
+            # print(vo['email'])
+            v.extend(Voter.objects.filter(email=vo['email']))
+        # print(v)
+        return render(request, 'upstaged_data/ip_voter_list.html', context={'object_list': v})
 
 # IP Address - listing
 class IPAddressList(ListView):
