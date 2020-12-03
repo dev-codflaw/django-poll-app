@@ -1,0 +1,34 @@
+html, body {
+	height: 100%;
+	background-color: #D2626C;
+	/* background-image: url("/static/assets/images/logo/upstaged-logo-final.png");
+	background-repeat: no-repeat;
+	background-position: center;
+	background-attachment: fixed; */
+}
+.masthead.mb-auto {
+	z-index: 10;
+}
+.inner p {
+	color: white;
+}
+.date-n-verion {
+	color: white;
+}
+main {
+	z-index: 1;
+	margin-top: 40px;
+}
+main::after {
+    content: "";
+    background: url("/static/assets/images/logo/upstaged-logo-final.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.5;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    z-index: -1;   
+  }

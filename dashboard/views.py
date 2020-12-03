@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 # Create your views here.
 from django.views.generic import View
@@ -259,6 +259,9 @@ def dashboard_data():
     context['g28_p2_prcnt'] = ((context['g28_ucla_auth_votes'] + context['g28_ucla_pending_votes']) / g28_all_auth_pending_vote)*100
 
     return context
+
+def redirect_dashboard_link(request):
+    return redirect('dashboard:home')
 
 class Dashboard(View):
 
