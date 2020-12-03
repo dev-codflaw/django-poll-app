@@ -99,7 +99,7 @@ class DataSheetUpload(FormView):
                 create_count = create_count + 1
                 # print(create_count)
             else:
-                skip_count = fake_count + 1
+                skip_count = skip_count + 1
                 # print(skip_count)
 
         # print(create_count)
