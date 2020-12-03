@@ -177,6 +177,8 @@
     var auth_votes = "{{auth_votes}}";
     var pending_votes = "{{pending_votes}}";
     var dis_votes = "{{dis_votes}}";
+
+    var duplicates_votes = "{{duplicates_votes}}";
     
 
 </script>
@@ -215,6 +217,7 @@
         // for votes chart
         var data2 = google.visualization.arrayToDataTable([
           ['Votes', 'Percent'],
+          ['Duplicate Votes',  parseInt(duplicates_votes)],
           ['Auth Votes',  parseInt(auth_votes)],
           ['Pending Votes',  parseInt(pending_votes)],
           ['Disqualified Votes',  parseInt(dis_votes)],
@@ -224,7 +227,7 @@
         var options2 = {
           title: 'Votes : '+String(total_votes),
           pieHole: 0.5,
-          slices: [{color: '#3366cc'},  {color: '#ff9900'}, {color: '#dc3912'},]
+          slices: [{color: '#990099'}, {color: '#3366cc'},  {color: '#ff9900'}, {color: '#dc3912'},]
         };
 
         var chart2 = new google.visualization.PieChart(document.getElementById('donutchart_votes'));

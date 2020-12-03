@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.views.generic import FormView, ListView
 # Create your views here.
 # one parameter named request
-from upstaged_data.models import  Voter, Datasheet
+from upstaged_data.models import  Voter, Datasheet, TempDatasheet, DuplicateVotes
 from accounts.views import send_email_confirmation_link
 
 from datetime import datetime
@@ -84,6 +84,7 @@ class DataSheetUpload(FormView):
         next(io_string)
         create_count = 0
         skip_count = 0
+        fake_entry = []
         for column in csv.reader(io_string, delimiter=',', quotechar="|"): 
             if not Datasheet.objects.filter(name=column[0].strip(), email=column[1].strip(), game=column[5].strip(), voted_for=column[6].strip()).exists():
                 Datasheet.objects.create(
@@ -97,18 +98,95 @@ class DataSheetUpload(FormView):
                     vote_time = column[7].strip(),
                 )
                 create_count = create_count + 1
-                # print(create_count)
+                print(create_count)
             else:
+                print(column[1])
+                fake_entry.append([column[0], column[1], column[2], column[3], column[4], column[5], column[6], column[7]])
                 skip_count = skip_count + 1
-                # print(skip_count)
+                print(skip_count)
 
-        # print(create_count)
-        # print(skip_count)
+        print(create_count)
+        print(skip_count)
+        response = export_dulicate_entry(fake_entry)
 
+        return response
         messages.warning(request, 'message from post function')
         return render(request, 'upstaged_data/data_sheet_upload.html')
 
 
+# Data Sheet upload - form - find duplicate entry
+class DuplicateDataSheetFind(FormView):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'upstaged_data/duplicate_votes_list.html')
+    
+    def post(self, request, *args, **kwargs):
+        csv_file = request.FILES['file']
+        # let's check if it is a csv file
+        if not csv_file.name.endswith('.csv'):
+            messages.error(request, 'THIS IS NOT A CSV FILE')  
+        data_set = csv_file.read().decode('UTF-8')
+        # setup a stream which is when we loop through each line we are able to handle a data in a stream
+        io_string = io.StringIO(data_set)
+        next(io_string)
+        create_count = 0
+        fake_entry = []
+        fake_entry_count = 0
+        for column in csv.reader(io_string, delimiter=',', quotechar="|"): 
+            if not TempDatasheet.objects.filter(email=column[1].strip(), game=column[5].strip()).exists():
+                TempDatasheet.objects.create(
+                    name = column[0].strip(),
+                    email = column[1].strip(),
+                    ip_address = column[2].strip(),
+                    group = column[3].strip(),
+                    round = column[4].strip(),
+                    game = column[5].strip(),
+                    voted_for = column[6].strip(),
+                    vote_time = column[7].strip(),
+                )
+                create_count = create_count + 1
+                print(create_count)
+            elif not DuplicateVotes.objects.filter(name=column[0].strip(), email=column[1].strip(), game=column[5].strip(), voted_for=column[6].strip()).exists():
+                print(column[1])
+                DuplicateVotes.objects.create(
+                    name = column[0].strip(),
+                    email = column[1].strip(),
+                    ip_address = column[2].strip(),
+                    group = column[3].strip(),
+                    round = column[4].strip(),
+                    game = column[5].strip(),
+                    voted_for = column[6].strip(),
+                    vote_time = column[7].strip(),               
+                )
+                fake_entry_count = fake_entry_count + 1
+                print(fake_entry_count)
+            else:
+                pass
+        TempDatasheet.objects.all().delete()      
+        print(create_count)
+        print(fake_entry_count)
+        return render(request, 'upstaged_data/duplicate_votes_list.html')
+
+
+# script for finding duplicate entry from common ninja datasheet - clean entry from beginning to end
+def export_dulicate_entry(request):
+
+    response = HttpResponse(content_type='text/csv')
+    writer = csv.writer(response)
+
+    #Header
+    writer.writerow(['Name', 'Email', 'IP Address', 'Group', 'Round', 'Game', 'Voted For', 'Date'])
+    obj_list = []
+    res_list = DuplicateVotes.objects.all()
+    for ob in res_list:
+        obj_list.append([ob.name, ob.email, ob.ip_address, ob.group, ob.round, ob.game, ob.voted_for, ob.vote_time,])
+    #CSV Data
+    writer.writerows(obj_list)
+    response['Content-Disposition'] = 'attachment; filename="fakevoters.csv"'
+    return response
+
+class DuplicateVoteList(ListView):
+    model = DuplicateVotes
+    paginate_by = 10
 
 # Unique / Email Voter listing
 class VoterList(ListView):
@@ -203,6 +281,7 @@ def export_voters_datas(request): # not active
     response['Content-Disposition'] = 'attachment; filename="voters.csv"'
     return response
     # return redirect( 'upstaged_data:unique-emails')
+
 
 
 def export_voters_data(request):
@@ -322,7 +401,7 @@ class DateWiseEmailList(ListView):
 
 
 def send_bulk_email_confirmation(request):
-    new_voter_list = Voter.objects.filter(verification_pending=True, is_email_sent=False, email_sent=0)[:30]
+    new_voter_list = Voter.objects.filter(verification_pending=True, is_email_sent=False)[:30]
     for obj in new_voter_list:
         try:
             result = send_email_confirmation_link(request, obj ,obj.email)

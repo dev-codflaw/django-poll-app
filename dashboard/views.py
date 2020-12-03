@@ -3,7 +3,7 @@ from django.shortcuts import render
 # Create your views here.
 from django.views.generic import View
 
-from upstaged_data.models import Datasheet, Voter
+from upstaged_data.models import Datasheet, Voter, DuplicateVotes
 from django.db import connection, transaction
 from datetime import date, timedelta, datetime
 
@@ -136,6 +136,7 @@ def dashboard_data():
     auth_voters = Voter.objects.filter(email_confirmed=True).count()
     verification_pending = Voter.objects.filter(email_confirmed=False, verification_pending=True, invalid=False).count()
     invalid_voters = Voter.objects.filter(invalid=True).count()
+    duplicates_votes = DuplicateVotes.objects.all().count()
 
 
 
@@ -143,6 +144,7 @@ def dashboard_data():
 
         'last_status_updated_dashboard':s.updated_at,
 
+        'duplicates_votes' : duplicates_votes,
         'total_votes':Datasheet.objects.filter(round='Semifinals').count(),
         'auth_votes': total_auth_votes(),
         'dis_votes': total_invalid_votes(),
@@ -308,6 +310,7 @@ class Dashboard(View):
         context['auth_votes'] =  data[1]
         context['dis_votes'] =  data[2]
         context['pending_votes'] =  data[3]
+        context['duplicates_votes'] =  0
         # print(len(obj_list))
 
 

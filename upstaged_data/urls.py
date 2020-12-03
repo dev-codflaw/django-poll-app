@@ -22,6 +22,9 @@ from upstaged_data.views import (
     IPVoterList,
     export_voters_data,
     IPVoterAction,
+    DuplicateDataSheetFind,
+    DuplicateVoteList,
+    export_dulicate_entry,
 )
 
 
@@ -30,12 +33,16 @@ app_name = 'upstaged_data'
 urlpatterns = [
 
     path('data-sheet/upload/', login_required(DataSheetUpload.as_view()), name="data-sheet-upload"),
+    path('data-sheet/upload/duplicate/', login_required(DuplicateDataSheetFind.as_view()), name="find-duplicates"),
 
     path('data-sheet/email/load/', login_required(load_unique_emails), name="email-load"),
     path('data-sheet/email/bulk-send/', login_required(send_bulk_email_confirmation), name="send_bulk-email"),
 
 
     path('data-sheet/email/load/', login_required(link_voter_datasheet), name="link-voter-datasheet"),
+
+    path('voter/duplicate/votes/', login_required(DuplicateVoteList.as_view()), name='duplicate-vote-list'),
+    path('voter/duplicate/votes/export/', login_required(export_dulicate_entry), name='export-duplicate-vote-list'),
 
     path('voter/', login_required(VoterList.as_view()), name='unique-emails'),
     path('voter/verified/', login_required(VerifiedEmailList.as_view()), name='all-verified-emails'),

@@ -2,7 +2,7 @@ from django.contrib import admin
 from import_export.admin import ExportMixin, ImportExportModelAdmin
 
 # Register your models here.
-from upstaged_data.models import Voter, Datasheet
+from upstaged_data.models import Voter, Datasheet, TempDatasheet, DuplicateVotes
 # from upstaged_data.admin import ImportExportModelAdmin
 
 def make_pending(modeladmin, request, queryset):
@@ -29,3 +29,12 @@ class DatasheetAdmin(ImportExportModelAdmin):
     search_fields = ('name', 'email', 'ip_address')
     list_display = ("id", "name", "email", "game","updated_at", "ip_address", "vote_time")
 
+@admin.register(TempDatasheet)
+class DatasheetAdmin(ImportExportModelAdmin):
+    search_fields = ('name', 'email', 'ip_address')
+    list_display = ("id", "name", "email", "game","updated_at", "ip_address", "vote_time")
+
+@admin.register(DuplicateVotes)
+class DatasheetAdmin(ImportExportModelAdmin):
+    search_fields = ('name', 'email', 'ip_address')
+    list_display = ("id", "name", "email", "game","updated_at", "ip_address", "vote_time")

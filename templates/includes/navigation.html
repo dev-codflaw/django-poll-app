@@ -43,7 +43,14 @@
                         class="nav-item {% if 'tables' in segment %} active {% endif %}">
                         <a href="{% url 'upstaged_data:ip-address-list' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-server"></i></span><span class="pcoded-mtext">IP Address</span></a>
                     </li>
-
+                    <li data-username="Table bootstrap datatable footable" 
+                        class="nav-item {% if 'tables' in segment %} active {% endif %}">
+                        <a href="{% url 'upstaged_data:find-duplicates' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-server"></i></span><span class="pcoded-mtext">Duplicate Votes Entry- Sheet upload</span></a>
+                    </li>                    
+                    <li data-username="Table bootstrap datatable footable" 
+                        class="nav-item {% if 'tables' in segment %} active {% endif %}">
+                        <a href="{% url 'upstaged_data:duplicate-vote-list' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-server"></i></span><span class="pcoded-mtext">Duplicate Votes Entry</span></a>
+                    </li>
                     <li data-username="Table bootstrap datatable footable" 
                         class="nav-item {% if 'tables' in segment %} active {% endif %}">
                         <a href="{% url 'upstaged_data:data-sheet' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-server"></i></span><span class="pcoded-mtext">Data Sheet-Copy</span></a>
