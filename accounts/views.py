@@ -77,7 +77,7 @@ class LoginView(View):
 class RegisterView(View):
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            return redirect('home')
+            return redirect('dashboard:home')
         else:
             form = SignUpForm(request.POST)
             return render(request, 'accounts/register.html', {'form':form})
@@ -131,7 +131,7 @@ class ChangePasswordView(LoginRequiredMixin, View):
             user = form.save()
             update_session_auth_hash(request, user)  # Important!
             messages.success(request, 'Your password successfully updated!')
-            return redirect('home')
+            return redirect('dashboard:home')
         else:
             messages.error(request, form.errors)
             return render(request, 'accounts/change_password.html', {'form': form})

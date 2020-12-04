@@ -51,7 +51,10 @@
                                                 <th>Name</th>
                                                 <th>Email</th>
                                                 <th>Status</th>
+                                                {% if user.is_superuser %}
                                                 <th>Action</th>
+                                                {% endif %}
+
               
                                             </tr>
                                         </thead>
@@ -72,6 +75,7 @@
                                                         <span class="text-dark">Not Availble</span>
                                                         {% endif %}
                                                     </td>
+                                                    {% if user.is_superuser %}
                                                     <td>
                                                         <form method="POST" action="{% url 'upstaged_data:ip-voters-action'%}">
                                                             {% csrf_token %}
@@ -84,6 +88,7 @@
                                                           <input type="submit" value="Go"/>
                                                         </form>
                                                     </td>
+                                                    {% endif %}
 
 
                                                 </tr>

@@ -25,8 +25,11 @@
                             <a class="btn btn-danger float-right" href="{% url 'upstaged_data:all-invalid-emails' %}">Invalid Emails</a>
                             <a class="btn btn-success float-right" href="{% url 'upstaged_data:all-verified-emails' %}">Valid Emails</a>
                             <a class="btn btn-warning float-right" href="{% url 'upstaged_data:all-pending-emails' %}">Pending Verification</a>
+                            {% if user.is_superuser %}
                             <a class="btn btn-info float-right" href="{% url 'upstaged_data:verification-emails-list' %}">Send Emails</a>
                             <a class="btn btn-info float-right" href="{% url 'upstaged_data:send_bulk-email' %}">Send Bulk Email</a>
+                            {% endif %}
+
                             <a class="btn btn-primary float-right" href="{% url 'upstaged_data:unique-emails' %}">All Emails</a>
                             <a class="btn btn-primary float-right" href="{% url 'upstaged_data:export-voters' %}">Export</a>
                             
@@ -73,7 +76,10 @@
                                         </ul>
                                     </nav>
                                 {% endif %}
+                                {% if user.is_superuser %}
                                 <a class="btn btn-dark float-right" href="{% url 'upstaged_data:email-load' %}">Load data</a>
+                                {% endif %}
+
 
                             </div>
                             
