@@ -1,0 +1,141 @@
+
+
+
+{% extends "layouts/base.html" %}
+
+{% block title %} Data-sheet {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+{% endblock stylesheets %}
+
+
+{% block content %}
+<div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <!-- [ breadcrumb ] start -->
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-12">
+                        <div class="page-header-title">
+                            <h5 class="m-b-10">TEMP IP Voter List</h5>
+
+                        </div>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index.html"><i class="feather icon-home"></i></a></li>
+                            <li class="breadcrumb-item"><a href="#!">Tables</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:">Basic Tables</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- [ breadcrumb ] end -->
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- [ Main Content ] start -->
+                <div class="row">
+                    <!-- [ Hover-table ] start -->
+                    <div class="col-xl-12">
+                       
+                        <div class="progress">
+                            <div class="progress-bar bg-success" style="width:{{valid_prcnt|floatformat}}%">
+                              
+                            </div>
+                            <div class="progress-bar bg-warning" style="width:{{pending_prcnt|floatformat}}%">
+                              
+                            </div>
+                            <div class="progress-bar bg-danger" style="width:{{invalid_prcnt|floatformat}}%">
+                              
+                            </div>
+                          </div>
+                        <div class="card">
+                            <div class="card-block table-border-style">
+                                <button type="button" class="btn btn-success">
+                                    Valid <span class="badge badge-light">{{voter_valid_count}} | {{valid_prcnt| floatformat}}%</span>
+                                    <span class="sr-only">unread messages</span>
+                                </button>
+                                <button type="button" class="btn btn-warning">
+                                    Pending <span class="badge badge-light">{{voter_pending_count}} | {{pending_prcnt | floatformat}}%</span>
+                                    <span class="sr-only">unread messages</span>
+                                </button>
+                                <button type="button" class="btn btn-danger">
+                                    Invalid <span class="badge badge-light">{{voter_invalid_count}} | {{invalid_prcnt | floatformat}}%</span>
+                                    <span class="sr-only">unread messages</span>
+                                </button>
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                
+                                                <th>Serial No</th>
+                                                <th>Name</th>
+                                                <th>Email</th>
+                                                <th>Status</th>
+                                                {% if user.is_superuser %}
+                                                <th>Action</th>
+                                                {% endif %}
+
+              
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            
+                                            {% for obj in object_list %}
+                                                <tr>
+                                                    <td>{{ forloop.counter }}</td>
+                                                    <td>{{ obj.name }}</td>
+                                                    <td>{{ obj.email }}</td>
+                                                    <td>
+                                                        {% if obj.email_confirmed %}
+                                                        <span class="text-success">Valid</span>
+                                                        {% elif obj.invalid %}
+                                                        <span class="text-danger">Invalid</span>
+                                                        {% elif obj.verification_pending %}
+                                                        <span class="text-warning">Pending</span>
+                                                        {% else %}
+                                                        <span class="text-dark">Not Availble</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    {% if user.is_superuser %}
+                                                    <td>
+                                                        <form method="POST" action="{% url 'upstaged_data:temp-ip-voters-action'%}">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="voter_email" value="{{ obj.email }}"/>
+                                                        <select name="v_action" id="vact">
+                                                            <option value="">----------</option>
+                                                            <option value="valid">Make Valid</option>
+                                                            <option value="invalid">Make Invalid</option>
+                                                          </select>
+                                                          <input type="submit" value="Go"/>
+                                                        </form>
+                                                    </td>
+                                                    {% endif %}
+
+
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- [ Hover-table ] end -->
+
+                </div>
+                <!-- [ Main Content ] end -->
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+{% endblock javascripts %}

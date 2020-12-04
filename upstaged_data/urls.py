@@ -25,6 +25,10 @@ from upstaged_data.views import (
     DuplicateDataSheetFind,
     DuplicateVoteList,
     export_dulicate_entry,
+    TempIPAddressList,
+    TempIPVoterAction,
+    TempIPVoterList,
+    make_invalid_action_for_ip_voters,
 )
 
 
@@ -53,6 +57,15 @@ urlpatterns = [
     path('voter/ip-address/', login_required(IPAddressList.as_view()), name='ip-address-list'),
     path('voter/ip-address/voter/', login_required(IPVoterList.as_view()), name='ip-address-voters'),
     path('voter/ip-address/voter/action/', login_required(IPVoterAction.as_view()), name='ip-voters-action'),
+
+    path('voter/ip-address/test/', login_required(TempIPAddressList.as_view()), name='temp-ip-address-list'),
+    path('voter/ip-address/voter/test/', login_required(TempIPVoterList.as_view()), name='temp-ip-address-voters'),
+    path('voter/ip-address/voter/action/test/', login_required(TempIPVoterAction.as_view()), name='temp-ip-voters-action'),
+    path('voter/ip-address/voter/action/test/invalid/', login_required(make_invalid_action_for_ip_voters), name='make-invalid-ip-voter'),
+
+
+
+
 
     path('voter/export/', login_required(export_voters_data), name='export-voters'),
 

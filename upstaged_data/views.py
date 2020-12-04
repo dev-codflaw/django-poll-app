@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.views.generic import FormView, ListView
 # Create your views here.
 # one parameter named request
-from upstaged_data.models import  Voter, Datasheet, TempDatasheet, DuplicateVotes
+from upstaged_data.models import  Voter, Datasheet, TempDatasheet, DuplicateVotes, TempVoter
 from accounts.views import send_email_confirmation_link
 
 from datetime import datetime
@@ -293,6 +293,105 @@ class IPAddressList(ListView):
         print(num)
         queryset = Datasheet.objects.values('ip_address',).annotate(Count('ip_address')).order_by('ip_address__count').filter(ip_address__count__gt=num)
         return render(request, 'upstaged_data/ip_address_list.html', context={'object_list': queryset})
+
+
+
+
+class TempIPVoterAction(ListView):
+
+    def get(self, request, *args, **kwargs):
+        # print(request.GET['ip'])
+        return render(request, 'upstaged_data/temp_ip_voter_list.html')
+
+    def post(self, request, *args, **kwargs):
+        # print(request.POST['v_action'])
+        # print(request.POST['voter_email'])
+        # messages.warning(request, 'Test message')
+        if request.POST['v_action'] == 'valid':
+            valid_act = True
+            invalid_act = False
+        if request.POST['v_action'] == 'invalid':
+            valid_act = False
+            invalid_act = True
+        action_source = 'by User - '+str(request.user.email)
+        # print(action_source)
+        # print(valid_act)
+        # print(invalid_act)
+        TempVoter.objects.filter(email=request.POST['voter_email']).update(email_confirmed=valid_act, invalid=invalid_act, verification_pending=False, email_verification_source=action_source)
+        return redirect('upstaged_data:temp-ip-address-list')
+
+class TempIPVoterList(ListView):
+    template_name = 'upstaged_data/temp_ip_voter_list.html'
+    model = Datasheet
+    # queryset = Datasheet.objects.values('email', 'ip_address').distinct().filter(ip_address='98.200.166.91')
+
+    def get(self, request, *args, **kwargs):
+        print(request.GET['ip'])
+        return render(request, 'upstaged_data/temp_ip_voter_list.html')
+
+    def post(self, request, *args, **kwargs):
+        # print(request.POST['ip'])
+        # queryset = Datasheet.objects.filter(ip_address=request.POST['ip']).order_by('email').distinct('email')
+        queryset = Datasheet.objects.values('email').distinct().filter(ip_address=request.POST['ip'])
+        # print(list(queryset))
+        v = []
+        voter_valid_count = 0
+        voter_invalid_count = 0
+        voter_pending_count = 0
+        for vo in queryset:
+            # print(vo['email'])
+            vtr_obj = list(TempVoter.objects.filter(email=vo['email']))
+            if vtr_obj[0].email_confirmed:
+                voter_valid_count = voter_valid_count + 1
+            elif vtr_obj[0].invalid:
+                voter_invalid_count = voter_invalid_count +1
+            elif vtr_obj[0].verification_pending:
+                voter_pending_count = voter_pending_count+1
+            else:
+                print('N/A')
+                pass
+            # print(vtr_obj[0].email_confirmed)
+            v.extend(vtr_obj)
+        # print(v)
+        valid_prcnt = (voter_valid_count/(voter_valid_count+voter_invalid_count+voter_pending_count))*100
+        invalid_prcnt = (voter_invalid_count/(voter_valid_count+voter_invalid_count+voter_pending_count))*100
+        pending_prcnt = (voter_pending_count/(voter_valid_count+voter_invalid_count+voter_pending_count))*100
+        return render(request, 'upstaged_data/temp_ip_voter_list.html', 
+        context={
+            'object_list': v,
+            'voter_valid_count':voter_valid_count,
+            'voter_invalid_count':voter_invalid_count,
+            'voter_pending_count':voter_pending_count,
+            'valid_prcnt':valid_prcnt,
+            'invalid_prcnt':invalid_prcnt,
+            'pending_prcnt':pending_prcnt,
+            })
+
+
+def make_invalid_action_for_ip_voters(request):
+    if request.method == 'POST':
+        queryset = Datasheet.objects.values('email').distinct().filter(ip_address=request.POST['ip'])
+        for vo in queryset:
+            # print(vo['email'])
+            s = TempVoter.objects.filter(email=vo['email'], verification_pending=True).update(email_confirmed=False, verification_pending=False, invalid=True)
+            print(s)
+    return redirect('upstaged_data:temp-ip-address-list')
+
+# IP Address - listing
+class TempIPAddressList(ListView):
+    template_name = 'upstaged_data/temp_ip_address_list.html'
+    model = Datasheet
+    queryset = Datasheet.objects.values('ip_address').annotate(Count('ip_address')).order_by('ip_address__count').filter(ip_address__count__gt=4)
+
+    def post(self, request, *args, **kwargs):
+        num = int(request.POST['num'])
+        print(num)
+        queryset = Datasheet.objects.values('ip_address',).annotate(Count('ip_address')).order_by('ip_address__count').filter(ip_address__count__gt=num)
+        return render(request, 'upstaged_data/temp_ip_address_list.html', context={'object_list': queryset})
+
+
+
+
 
 def export_voters_datas(request): # not active 
     voter_resource = VoterResource()

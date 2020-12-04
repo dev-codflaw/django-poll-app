@@ -20,7 +20,11 @@
                         <a href="{% url 'dashboard:voting-dashboard' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-home"></i></span>
                             <span class="pcoded-mtext">Dashboard</span></a>
                     </li>
-
+                    <li data-username="dashboard Default Ecommerce CRM Analytics Crypto Project" 
+                        class="nav-item {% if 'index' in segment %} active {% endif %}">
+                        <a href="{% url 'dashboard:test-voting-dashboard' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                            <span class="pcoded-mtext">Test Dashboard</span></a>
+                    </li>
                     <li class="nav-item pcoded-menu-caption">
                         <label>Forms & table</label>
                     </li>
@@ -73,6 +77,11 @@
                         </a>
                     </li>
                     {% endif %}
+                    <hr><hr>
+                    <li data-username="Table bootstrap datatable footable" 
+                        class="nav-item {% if 'tables' in segment %} active {% endif %}">
+                        <a href="{% url 'upstaged_data:temp-ip-address-list' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-server"></i></span><span class="pcoded-mtext">IP Address - Test</span></a>
+                    </li>
                     
                 </ul>
             </div>

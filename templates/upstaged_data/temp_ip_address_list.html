@@ -1,0 +1,110 @@
+
+
+
+{% extends "layouts/base.html" %}
+
+{% block title %} Data-sheet {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+{% endblock stylesheets %}
+
+
+{% block content %}
+<div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <!-- [ breadcrumb ] start -->
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-12">
+                        <div class="page-header-title">
+                            <h5 class="m-b-10">TEmp IP Data Sheet</h5>
+                            <div>
+                                <form method="POST" >
+                                    {% csrf_token %}
+                                    <input type="text" name='num'/>
+                                    <input type="submit"/>
+                                </form>
+                            </div>
+                            <div>
+                                <form method="POST" action="{% url 'upstaged_data:make-invalid-ip-voter' %}">
+                                    {% csrf_token %}
+                                    <input type="text" name='ip'/>
+                                    <input type="submit" value="Make Invalid ( action on pending )">
+                                </form>
+                            </div>
+
+                        </div>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index.html"><i class="feather icon-home"></i></a></li>
+                            <li class="breadcrumb-item"><a href="#!">Tables</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:">Basic Tables</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- [ breadcrumb ] end -->
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- [ Main Content ] start -->
+                <div class="row">
+                    <!-- [ Hover-table ] start -->
+                    <div class="col-xl-12">
+                        
+                        <div class="card">
+                     
+                            <div class="card-block table-border-style">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                
+                                                <th>Serial No</th>
+                                                <th>IP</th>
+                                                <th>Count</th>
+                                                <th>Action</th>
+              
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for obj in object_list %}
+                                                <tr>
+                                                    <td>{{ forloop.counter }}</td>
+                                                    <td>{{ obj.ip_address }}</td>
+                                                    <td>{{ obj.ip_address__count }}</td>
+                                                    <td>
+                                                        <form method="POST" action="{% url 'upstaged_data:temp-ip-address-voters' %}">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="ip" value="{{ obj.ip_address }}"/>
+                                                            <input type="submit" value="View Details"/>
+                                                        </form>
+                                                    </td>
+
+
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- [ Hover-table ] end -->
+
+                </div>
+                <!-- [ Main Content ] end -->
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+{% endblock javascripts %}
