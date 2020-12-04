@@ -60,7 +60,7 @@
                         class="nav-item {% if 'tables' in segment %} active {% endif %}">
                         <a href="{% url 'upstaged_data:data-sheet' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-server"></i></span><span class="pcoded-mtext">Data Sheet-Copy</span></a>
                     </li>
-                    {% if user.is_active and user.is_superuser  %}
+                    {% if user.is_active and user.is_staff  %}
 
                     <li data-username="Table bootstrap datatable footable" 
                         class="nav-item {% if 'tables' in segment %} active {% endif %}">
