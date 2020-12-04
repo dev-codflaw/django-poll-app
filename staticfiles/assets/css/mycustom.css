@@ -19,6 +19,17 @@ main {
 	z-index: 1;
 	margin-top: 40px;
 }
+.btn-disable{
+  cursor:not-allowed;
+  color: rgb(99, 93, 93);
+
+}
+.cover .btn-lg {
+  padding: .75rem 1.25rem;
+  font-weight: 700;
+  width: 500px;
+}
+
 main::after {
     content: "";
     background: url("/static/assets/images/logo/upstaged-logo-final.png");

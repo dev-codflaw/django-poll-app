@@ -19,7 +19,7 @@ make_confirm.short_description = "Mark selected email as confirmed"
 
 @admin.register(Voter)
 class VoterAdmin(ImportExportModelAdmin):
-    list_display = ("id", "name", "email", "email_confirmed", "verification_pending", "invalid", "is_email_sent", "email_sent", "email_verification_source")
+    list_display = ("id", "name", "email", "email_confirmed", "updated_at","verification_pending", "invalid", "is_email_sent", "email_sent", "email_verification_source")
     search_fields = ('name', 'email', )
     actions = [make_pending, make_confirm, make_invalid]
 
