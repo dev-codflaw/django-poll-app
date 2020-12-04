@@ -38,10 +38,32 @@
                 <div class="row">
                     <!-- [ Hover-table ] start -->
                     <div class="col-xl-12">
-                        
+                       
+                        <div class="progress">
+                            <div class="progress-bar bg-success" style="width:{{valid_prcnt|floatformat}}%">
+                              
+                            </div>
+                            <div class="progress-bar bg-warning" style="width:{{pending_prcnt|floatformat}}%">
+                              
+                            </div>
+                            <div class="progress-bar bg-danger" style="width:{{invalid_prcnt|floatformat}}%">
+                              
+                            </div>
+                          </div>
                         <div class="card">
-                     
                             <div class="card-block table-border-style">
+                                <button type="button" class="btn btn-success">
+                                    Valid <span class="badge badge-light">{{voter_valid_count}} | {{valid_prcnt| floatformat}}%</span>
+                                    <span class="sr-only">unread messages</span>
+                                </button>
+                                <button type="button" class="btn btn-warning">
+                                    Pending <span class="badge badge-light">{{voter_pending_count}} | {{pending_prcnt | floatformat}}%</span>
+                                    <span class="sr-only">unread messages</span>
+                                </button>
+                                <button type="button" class="btn btn-danger">
+                                    Invalid <span class="badge badge-light">{{voter_invalid_count}} | {{invalid_prcnt | floatformat}}%</span>
+                                    <span class="sr-only">unread messages</span>
+                                </button>
                                 <div class="table-responsive">
                                     <table class="table table-hover">
                                         <thead>
@@ -59,6 +81,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            
                                             {% for obj in object_list %}
                                                 <tr>
                                                     <td>{{ forloop.counter }}</td>

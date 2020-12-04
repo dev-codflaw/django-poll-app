@@ -180,7 +180,7 @@ def dashboard_data():
         'last_status_updated_dashboard':s.updated_at,
 
         'duplicates_votes' : duplicates_votes,
-        'total_votes':Datasheet.objects.filter(round='Semifinals').count(),
+        'total_votes':Datasheet.objects.filter(round='Semifinals').count() + duplicates_votes,
         'auth_votes': total_auth_votes(),
         'dis_votes': total_invalid_votes(),
         'pending_votes': total_pending_votes(),

@@ -250,11 +250,37 @@ class IPVoterList(ListView):
         queryset = Datasheet.objects.values('email').distinct().filter(ip_address=request.POST['ip'])
         # print(list(queryset))
         v = []
+        voter_valid_count = 0
+        voter_invalid_count = 0
+        voter_pending_count = 0
         for vo in queryset:
             # print(vo['email'])
-            v.extend(Voter.objects.filter(email=vo['email']))
+            vtr_obj = list(Voter.objects.filter(email=vo['email']))
+            if vtr_obj[0].email_confirmed:
+                voter_valid_count = voter_valid_count + 1
+            elif vtr_obj[0].invalid:
+                voter_invalid_count = voter_invalid_count +1
+            elif vtr_obj[0].verification_pending:
+                voter_pending_count = voter_pending_count+1
+            else:
+                print('N/A')
+                pass
+            # print(vtr_obj[0].email_confirmed)
+            v.extend(vtr_obj)
         # print(v)
-        return render(request, 'upstaged_data/ip_voter_list.html', context={'object_list': v})
+        valid_prcnt = (voter_valid_count/(voter_valid_count+voter_invalid_count+voter_pending_count))*100
+        invalid_prcnt = (voter_invalid_count/(voter_valid_count+voter_invalid_count+voter_pending_count))*100
+        pending_prcnt = (voter_pending_count/(voter_valid_count+voter_invalid_count+voter_pending_count))*100
+        return render(request, 'upstaged_data/ip_voter_list.html', 
+        context={
+            'object_list': v,
+            'voter_valid_count':voter_valid_count,
+            'voter_invalid_count':voter_invalid_count,
+            'voter_pending_count':voter_pending_count,
+            'valid_prcnt':valid_prcnt,
+            'invalid_prcnt':invalid_prcnt,
+            'pending_prcnt':pending_prcnt,
+            })
 
 # IP Address - listing
 class IPAddressList(ListView):
