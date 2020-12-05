@@ -7,8 +7,10 @@
 
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}
+<script>
+    page_url_invalid_tag  = '{{page_url_invalid_tag}}';
+</script>
 {% endblock stylesheets %}
-
 
 {% block content %}
 <div class="pcoded-content">
@@ -58,29 +60,53 @@
                                     <nav aria-label="Page navigation example float-right">
                                         <ul class="pagination">
                                             {% if page_obj.has_previous %}
+                                                <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
                                                 <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
                                             {% endif %}
-                                            {% for i in paginator.page_range %}
-                                            <!-- {% if page_obj.number == i %}
-                                              <li class="active page-link"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
-                                            {% else %}
-                                              <li><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+
+                                            {% if page_obj.number > 3 %}
+                                            <li><a class="page-link" href="?page={{ page_obj.number|add:-3}}">{{ page_obj.number|add:-3 }}</a></li>
                                             {% endif %}
-                                            {% endfor %} -->
+                                            {% if page_obj.number > 2  %}
+
+                                            <li><a class="page-link" href="?page={{ page_obj.number|add:-2}}">{{ page_obj.number|add:-2 }}</a></li>
+                                            {% endif %}
+                                            {% if page_obj.number > 1 %}
+                                            <li><a class="page-link" href="?page={{ page_obj.number|add:-1}}">{{ page_obj.number|add:-1 }}</a></li>
+                                            {% endif %}
+
+                                            {% for i in paginator.page_range %}
+
+                                            {% if page_obj.number == i %}
+                                            <li class="active page-link"><span>{{ i }} (current)</span></li>
+                                            {% else %}
+                                              <!-- <li><a class="page-link" href="?page={{ i }}">{{ i }}</a></li> -->
+                                            {% endif %}
+                                            {% endfor %}
+
+
                                             <span class="page-current">
-                                                <li class="page-item"><a class="page-link" href="#!">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</a></li>
+                                                <!-- <li class="page-item"><a class="page-link" href="#!">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</a></li> -->
                                             </span>
                                             {% if page_obj.has_next %}
+                                                <li><a class="page-link" href="?page={{ page_obj.number|add:1}}">{{ page_obj.number|add:1 }}</a></li>
+                                                <li><a class="page-link" href="?page={{ page_obj.number|add:2}}">{{ page_obj.number|add:2 }}</a></li>
+                                                <li><a class="page-link" href="?page={{ page_obj.number|add:3}}">{{ page_obj.number|add:3 }}</a></li>
                                                 <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+                                                <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last</a></li>
                                             {% endif %}
                                         </ul>
                                     </nav>
                                 {% endif %}
+                                <!-- {% ifequal request.get_full_path page_url_invalid_tag %}
+                                    <a class="btn btn-info float-right" href="#">Export Invalid Data</a>
+                                {% else %}
+                                    <span>.</span>
+                                {% endifequal %} -->
+
                                 {% if user.is_superuser %}
-                                <a class="btn btn-dark float-right" href="{% url 'upstaged_data:email-load' %}">Load data</a>
+                                    <a class="btn btn-dark float-right" href="{% url 'upstaged_data:email-load' %}">Load data</a>
                                 {% endif %}
-
-
                             </div>
                             
                             <div class="card-block table-border-style">

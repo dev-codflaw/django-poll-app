@@ -179,6 +179,21 @@ def export_dulicate_entry(request):
     response['Content-Disposition'] = 'attachment; filename="fakevoters.csv"'
     return response
 
+def export_all_invalid_voters(request):
+    response = HttpResponse(content_type='text/csv')
+    writer = csv.writer(response)
+
+    #Header
+    writer.writerow(['Name', 'Email', 'IP Address', 'Group', 'Round', 'Game', 'Voted For', 'Date'])
+    obj_list = []
+    res_list = DuplicateVotes.objects.all()
+    for ob in res_list:
+        obj_list.append([ob.name, ob.email, ob.ip_address, ob.group, ob.round, ob.game, ob.voted_for, ob.vote_time,])
+    #CSV Data
+    writer.writerows(obj_list)
+    response['Content-Disposition'] = 'attachment; filename="fakevoters.csv"'
+    return response
+
 class DuplicateVoteList(ListView):
     model = DuplicateVotes
     paginate_by = 10
@@ -188,6 +203,7 @@ class VoterList(ListView):
     model = Voter
     paginate_by = 10
     queryset = Voter.objects.all()
+
 
 class VerifiedEmailList(ListView):
     model = Voter
@@ -211,6 +227,10 @@ class InvalidEmailList(ListView):
     paginate_by = 10
     queryset = Voter.objects.filter(invalid=True, email_confirmed=False).order_by('email')
 
+    def get_context_data(self, **kwargs):
+        context = super(InvalidEmailList, self).get_context_data(**kwargs)
+        context['page_url_invalid_tag'] = '/voter/invalid/'
+        return context
 
 class IPVoterAction(ListView):
 

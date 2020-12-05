@@ -291,35 +291,41 @@ def dashboard_data():
         
 
         # 'g25_harvard_total_votes': Datasheet.objects.filter(game='25', voted_for='#2 Harvard - Opportunes').count(),
+        'g25_harvard_total_votes_APD': valid_vote_for_harvard + pending_vote_for_harvard + invalid_vote_for_harvard,
         'g25_harvard_total_votes': valid_vote_for_harvard + pending_vote_for_harvard,
         'g25_harvard_auth_votes': valid_vote_for_harvard,
         'g25_harvard_dis_votes': invalid_vote_for_harvard,
         'g25_harvard_pending_votes': pending_vote_for_harvard,
 
         # 'g25_rutgers_total_votes': Datasheet.objects.filter(game='25', voted_for='#2 Rutgers - Raag').values('email').count(),
+        'g25_rutgers_total_votes_APD': valid_vote_for_rutgers + pending_vote_for_rutgers + invalid_vote_for_rutgers,
         'g25_rutgers_total_votes': valid_vote_for_rutgers + pending_vote_for_rutgers,
         'g25_rutgers_auth_votes': valid_vote_for_rutgers,
         'g25_rutgers_dis_votes': invalid_vote_for_rutgers,
         'g25_rutgers_pending_votes': pending_vote_for_rutgers,
 
+        'g26_penn_total_votes_APD': valid_vote_for_penn + pending_vote_for_penn,
         'g26_penn_total_votes': valid_vote_for_penn + pending_vote_for_penn,
         # 'g26_penn_total_voters': Datasheet.objects.filter(game='26', voted_for='#2 U Penn - Penn Masala').values('email').distinct().count(),
         'g26_penn_auth_votes': valid_vote_for_penn,
         'g26_penn_dis_votes': invalid_vote_for_penn,
         'g26_penn_pending_votes': pending_vote_for_penn,
         
+        'g26_illinois_total_votes_APD': valid_vote_for_illinois + pending_vote_for_illinois + invalid_vote_for_illinois,
         'g26_illinois_total_votes': valid_vote_for_illinois + pending_vote_for_illinois,
         # 'g26_illinois_total_voters': Datasheet.objects.filter(game='26', voted_for='#2 U Illinois - No Comment').values('email').distinct().count(),
         'g26_illinois_auth_votes': valid_vote_for_illinois,
         'g26_illinois_dis_votes': invalid_vote_for_illinois,
         'g26_illinois_pending_votes': pending_vote_for_illinois,
 
+        'g27_vanderbilt_total_votes_APD': valid_vote_for_vanderbilt + pending_vote_for_vanderbilt + invalid_vote_for_vanderbilt,
         'g27_vanderbilt_total_votes': valid_vote_for_vanderbilt + pending_vote_for_vanderbilt,
         # 'g27_vanderbilt_total_voters': Datasheet.objects.filter(game='27', voted_for='#1 Vanderbilt - Melodores').values('email').distinct().count(),
         'g27_vanderbilt_auth_votes': valid_vote_for_vanderbilt,
         'g27_vanderbilt_dis_votes': invalid_vote_for_vanderbilt,
         'g27_vanderbilt_pending_votes': pending_vote_for_vanderbilt,
 
+        'g27_florida_total_votes_APD': valid_vote_for_florida + pending_vote_for_florida + invalid_vote_for_florida,
         'g27_florida_total_votes': valid_vote_for_florida + pending_vote_for_florida,
         # 'g27_florida_total_voters': Datasheet.objects.filter(game='27', voted_for='#3 Florida State - All-Night Yahtzee').values('email').distinct().count(),
         'g27_florida_auth_votes': valid_vote_for_florida,
@@ -327,12 +333,14 @@ def dashboard_data():
         'g27_florida_pending_votes': pending_vote_for_florida,
 
 
+        'g28_bringham_total_votes_APD': valid_vote_for_bringham + pending_vote_for_bringham + invalid_vote_for_bringham,
         'g28_bringham_total_votes': valid_vote_for_bringham + pending_vote_for_bringham,
         # 'g28_bringham_total_voters': Datasheet.objects.filter(game='28', voted_for='#2 Brigham Young U - Vocal Point').values('email').distinct().count(),
         'g28_bringham_auth_votes': valid_vote_for_bringham,
         'g28_bringham_dis_votes': invalid_vote_for_bringham,
         'g28_bringham_pending_votes': pending_vote_for_bringham,
 
+        'g28_ucla_total_votes_APD': valid_vote_for_ucla + pending_vote_for_ucla + invalid_vote_for_ucla,
         'g28_ucla_total_votes': valid_vote_for_ucla + pending_vote_for_ucla,
         # 'g28_ucla_total_voters': Datasheet.objects.filter(game='28', voted_for='#1 UCLA - Scattertones').values('email').distinct().count(),
         'g28_ucla_auth_votes': valid_vote_for_ucla,
@@ -353,6 +361,13 @@ def dashboard_data():
     context['total_pending_votes_count_for_all_team'] = (pending_vote_for_harvard + pending_vote_for_rutgers +
     pending_vote_for_penn + pending_vote_for_illinois + pending_vote_for_vanderbilt + pending_vote_for_florida +
     pending_vote_for_bringham + pending_vote_for_ucla)
+
+    context['total_dis_votes_count_for_all_team'] = (invalid_vote_for_harvard + invalid_vote_for_rutgers +
+    invalid_vote_for_penn + invalid_vote_for_illinois + invalid_vote_for_vanderbilt + invalid_vote_for_florida +
+    invalid_vote_for_bringham + invalid_vote_for_ucla)
+
+    context['total_APD_votes_count_for_all_team'] = (context['total_dis_votes_count_for_all_team'] +
+    context['total_auth_votes_count_for_all_team'] + context['total_pending_votes_count_for_all_team'] )
 
 
     context['auth_votes_percent'] = (total_auth_votes()/context['total_votes'])*100
@@ -476,35 +491,41 @@ def temp_dashboard_data():
         
 
         # 'g25_harvard_total_votes': Datasheet.objects.filter(game='25', voted_for='#2 Harvard - Opportunes').count(),
+        'g25_harvard_total_votes_APD': valid_vote_for_harvard + pending_vote_for_harvard + invalid_vote_for_harvard,
         'g25_harvard_total_votes': valid_vote_for_harvard + pending_vote_for_harvard,
         'g25_harvard_auth_votes': valid_vote_for_harvard,
         'g25_harvard_dis_votes': invalid_vote_for_harvard,
         'g25_harvard_pending_votes': pending_vote_for_harvard,
 
         # 'g25_rutgers_total_votes': Datasheet.objects.filter(game='25', voted_for='#2 Rutgers - Raag').values('email').count(),
+        'g25_rutgers_total_votes_APD': valid_vote_for_rutgers + pending_vote_for_rutgers + invalid_vote_for_rutgers,
         'g25_rutgers_total_votes': valid_vote_for_rutgers + pending_vote_for_rutgers,
         'g25_rutgers_auth_votes': valid_vote_for_rutgers,
         'g25_rutgers_dis_votes': invalid_vote_for_rutgers,
         'g25_rutgers_pending_votes': pending_vote_for_rutgers,
 
+        'g26_penn_total_votes_APD': valid_vote_for_penn + pending_vote_for_penn + invalid_vote_for_penn,
         'g26_penn_total_votes': valid_vote_for_penn + pending_vote_for_penn,
         # 'g26_penn_total_voters': Datasheet.objects.filter(game='26', voted_for='#2 U Penn - Penn Masala').values('email').distinct().count(),
         'g26_penn_auth_votes': valid_vote_for_penn,
         'g26_penn_dis_votes': invalid_vote_for_penn,
         'g26_penn_pending_votes': pending_vote_for_penn,
         
+        'g26_illinois_total_votes_APD': valid_vote_for_illinois + pending_vote_for_illinois + invalid_vote_for_illinois,
         'g26_illinois_total_votes': valid_vote_for_illinois + pending_vote_for_illinois,
         # 'g26_illinois_total_voters': Datasheet.objects.filter(game='26', voted_for='#2 U Illinois - No Comment').values('email').distinct().count(),
         'g26_illinois_auth_votes': valid_vote_for_illinois,
         'g26_illinois_dis_votes': invalid_vote_for_illinois,
         'g26_illinois_pending_votes': pending_vote_for_illinois,
 
+        'g27_vanderbilt_total_votes_APD': valid_vote_for_vanderbilt + pending_vote_for_vanderbilt + invalid_vote_for_vanderbilt,
         'g27_vanderbilt_total_votes': valid_vote_for_vanderbilt + pending_vote_for_vanderbilt,
         # 'g27_vanderbilt_total_voters': Datasheet.objects.filter(game='27', voted_for='#1 Vanderbilt - Melodores').values('email').distinct().count(),
         'g27_vanderbilt_auth_votes': valid_vote_for_vanderbilt,
         'g27_vanderbilt_dis_votes': invalid_vote_for_vanderbilt,
         'g27_vanderbilt_pending_votes': pending_vote_for_vanderbilt,
 
+        'g27_florida_total_votes_APD': valid_vote_for_florida + pending_vote_for_florida + invalid_vote_for_florida,
         'g27_florida_total_votes': valid_vote_for_florida + pending_vote_for_florida,
         # 'g27_florida_total_voters': Datasheet.objects.filter(game='27', voted_for='#3 Florida State - All-Night Yahtzee').values('email').distinct().count(),
         'g27_florida_auth_votes': valid_vote_for_florida,
@@ -512,12 +533,14 @@ def temp_dashboard_data():
         'g27_florida_pending_votes': pending_vote_for_florida,
 
 
+        'g28_bringham_total_votes_APD': valid_vote_for_bringham + pending_vote_for_bringham + invalid_vote_for_bringham,
         'g28_bringham_total_votes': valid_vote_for_bringham + pending_vote_for_bringham,
         # 'g28_bringham_total_voters': Datasheet.objects.filter(game='28', voted_for='#2 Brigham Young U - Vocal Point').values('email').distinct().count(),
         'g28_bringham_auth_votes': valid_vote_for_bringham,
         'g28_bringham_dis_votes': invalid_vote_for_bringham,
         'g28_bringham_pending_votes': pending_vote_for_bringham,
 
+        'g28_ucla_total_votes_APD': valid_vote_for_ucla + pending_vote_for_ucla + invalid_vote_for_ucla,
         'g28_ucla_total_votes': valid_vote_for_ucla + pending_vote_for_ucla,
         # 'g28_ucla_total_voters': Datasheet.objects.filter(game='28', voted_for='#1 UCLA - Scattertones').values('email').distinct().count(),
         'g28_ucla_auth_votes': valid_vote_for_ucla,
@@ -538,6 +561,18 @@ def temp_dashboard_data():
     context['total_pending_votes_count_for_all_team'] = (pending_vote_for_harvard + pending_vote_for_rutgers +
     pending_vote_for_penn + pending_vote_for_illinois + pending_vote_for_vanderbilt + pending_vote_for_florida +
     pending_vote_for_bringham + pending_vote_for_ucla)
+    
+    context['total_dis_votes_count_for_all_team'] = (invalid_vote_for_harvard + invalid_vote_for_rutgers +
+    invalid_vote_for_penn + invalid_vote_for_illinois + invalid_vote_for_vanderbilt + invalid_vote_for_florida +
+    invalid_vote_for_bringham + invalid_vote_for_ucla)
+    
+    # context['total_APD_votes_count_for_all_team'] = (pending_vote_for_harvard + pending_vote_for_rutgers +
+    # pending_vote_for_penn + pending_vote_for_illinois + pending_vote_for_vanderbilt + pending_vote_for_florida +
+    # pending_vote_for_bringham + pending_vote_for_ucla)
+    
+
+    context['total_APD_votes_count_for_all_team'] = (context['total_auth_votes_count_for_all_team'] + 
+    context['total_pending_votes_count_for_all_team'] + context['total_dis_votes_count_for_all_team'])
 
 
     context['auth_votes_percent'] = (total_auth_votes()/context['total_votes'])*100
