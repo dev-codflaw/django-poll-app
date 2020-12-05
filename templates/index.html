@@ -42,11 +42,10 @@
                         </div>
                     </div>      
                     <div class="row">
-                        <div id="donutchart_votes" style="width: 600px; height: 350px;"></div>
+                        <div id="donutchart_votes" style="width: 500px; height: 350px;"></div>
 
-                        <div id="donutchart_voters" style="width: 600px; height: 350px;"></div>
+                        <div id="donutchart_voters" style="width: 500px; height: 350px;"></div>
 
-                        <div id="donutchart_votes_datewise" style="width: 400px; height: 350px;"></div>
 
                         <!--[ year  sales section ] end-->
                         <!--[ Recent Users ] start-->
@@ -62,12 +61,12 @@
                                             <tr>
                                                 <th>Game</th>
                                                 <th>Particiapent</th>
-                                                <th>Percent (A + P )</th>
-                                                <th class="text-info">Total Votes(A + P)</th>
+                                                <th>Percent<br>(A + P )</th>
+                                                <th class="text-info">Total Votes<br>(A + P)</th>
                                                 <th class="text-success">Authenticated</th>
                                                 <th class="text-warning">Pending</th>
                                                 <th class="text-danger">Disqualified</th>
-                                                <th >Total Votes (A + P + B)</th>
+                                                <th >Total Votes<br>(A + P + B)</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -231,7 +230,7 @@
 
         var options = {
           title: 'Voters : '+String(total_voters),
-          pieHole: 0.5,
+          pieHole: 0.4,
           slices: [{color: '#3366cc'},  {color: '#ff9900'}, {color: '#dc3912'},]
         };
 
@@ -250,7 +249,7 @@
 
         var options2 = {
           title: 'Votes : '+String(total_votes),
-          pieHole: 0.5,
+          pieHole: 0.4,
           slices: [{color: '#990099'}, {color: '#3366cc'},  {color: '#ff9900'}, {color: '#dc3912'},]
         };
 
