@@ -773,6 +773,7 @@ class TestDashboard(View):
 
 
 def date_wise_vote_list(request):
+
     if request.method=="POST":
         is_private = request.POST.get('dates', False)
         x = is_private.split(" - ")
@@ -806,3 +807,6 @@ def date_wise_vote_list(request):
 
         return render(request, 'dashboard/date_wise_votes_list.html', context)
     return render(request, 'dashboard/date_wise_votes_list.html', )
+
+
+

@@ -16,4 +16,6 @@ urlpatterns = [
     path('voting/dashboard/test/', login_required(TestDashboard.as_view()), name='test-voting-dashboard'),
     path('votes/date-wise/', login_required(date_wise_vote_list), name='date-wise-votes'),
 
+    path('thank-you/', TemplateView.as_view(template_name='dashboard/thank-you.html'), name='thank-you'),
+
 ]

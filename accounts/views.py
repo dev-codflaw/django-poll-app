@@ -193,24 +193,27 @@ def send_email_confirmation_link(request, obj, to_email_address):
     return True
 
 
-
 def email_activate(request, oidb64, token):
-    try:
-        oid = force_text(urlsafe_base64_decode(oidb64))
-        obj = Voter.objects.get(pk=oid)
-    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
-        obj = None
+    return redirect('dashboard:thank-you')
 
-    if obj is not None and account_activation_token.check_token(obj, token):
-        obj.verification_pending= False
-        obj.invalid = False
-        obj.email_confirmed = True
-        obj.email_verification_source='by email'
-        obj.save()
-        context = {'text_msg':'We logged your vote. Winner will be announced soon after voting is over. Stay tuned!'}
-        return render(request, 'accounts/email_confirm_land_msg.html', context)
-        # login(request, user)
-        # return redirect('home')
-    else:
-        context = {'text_msg':'Your email is already verified. Thanks.'}
-        return render(request, 'accounts/email_confirm_land_msg.html', context)
+
+# def email_activate(request, oidb64, token):
+#     try:
+#         oid = force_text(urlsafe_base64_decode(oidb64))
+#         obj = Voter.objects.get(pk=oid)
+#     except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+#         obj = None
+
+#     if obj is not None and account_activation_token.check_token(obj, token):
+#         obj.verification_pending= False
+#         obj.invalid = False
+#         obj.email_confirmed = True
+#         obj.email_verification_source='by email'
+#         obj.save()
+#         context = {'text_msg':'We logged your vote. Winner will be announced soon after voting is over. Stay tuned!'}
+#         return render(request, 'accounts/email_confirm_land_msg.html', context)
+#         # login(request, user)
+#         # return redirect('home')
+#     else:
+#         context = {'text_msg':'Your email is already verified. Thanks.'}
+#         return render(request, 'accounts/email_confirm_land_msg.html', context)

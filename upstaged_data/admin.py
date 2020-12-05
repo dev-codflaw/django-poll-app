@@ -32,7 +32,7 @@ class TempVoterAdmin(ImportExportModelAdmin):
 @admin.register(Datasheet)
 class DatasheetAdmin(ImportExportModelAdmin):
     search_fields = ('name', 'email', 'ip_address')
-    list_display = ("id", "name", "email", "game","updated_at", "ip_address", "vote_time")
+    list_display = ("id", "name", "email", "game","updated_at", "ip_address", "vote_time", "voted_for")
 
 @admin.register(TempDatasheet)
 class DatasheetAdmin(ImportExportModelAdmin):
@@ -42,4 +42,4 @@ class DatasheetAdmin(ImportExportModelAdmin):
 @admin.register(DuplicateVotes)
 class DatasheetAdmin(ImportExportModelAdmin):
     search_fields = ('name', 'email', 'ip_address')
-    list_display = ("id", "name", "email", "game","updated_at", "ip_address", "vote_time")
+    list_display = ("id", "name", "email", "game","updated_at", "ip_address", "vote_time", "voted_for")
