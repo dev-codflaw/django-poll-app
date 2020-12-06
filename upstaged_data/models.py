@@ -44,6 +44,7 @@ class TempVoter(models.Model):
     class Meta:
         ordering = ['id']
         db_table = 'temp_voter'
+        
 
 class Datasheet(models.Model):
     # voter_id = models.ForeignKey(Voter, on_delete=models.DO_NOTHING, default=None, null=True)
@@ -64,7 +65,7 @@ class Datasheet(models.Model):
     class Meta:
         ordering = ['name']
         db_table = 'datasheet'
-
+        
 
 
 class TempDatasheet(models.Model):
