@@ -13,6 +13,8 @@ from django.http import HttpResponse
 import io
 from rest_framework.renderers import JSONRenderer
 from django.views.decorators.csrf import csrf_exempt
+import re
+import dns.resolver
 
 
 def voter(request):
@@ -53,13 +55,13 @@ def voter_react_create(request):
 			print('serializer-data:-', serializer.validated_data)
 			try:
 				if VoterReact.objects.get(email=serializer.validated_data.get('email')):
-					res = {'msg':'User Already Exist'}
+					res = {'msg':'You already registered.'}
 					json_data = JSONRenderer().render(res)
 					return HttpResponse(json_data, content_type='application/json')
 			except Exception as e:
 				print('Exception:- ', e)
 				serializer.save()
-				res = {'msg':'New User Created'}
+				res = {'msg':'You are successfully registered!'}
 				json_data = JSONRenderer().render(res)
 				return HttpResponse(json_data, content_type='application/json')
 		else:
@@ -89,14 +91,14 @@ def vote_register(request):
 			# print(serializer.data['email'])
 			try:
 				if Vote.objects.get(email=serializer.validated_data.get('email')):
-					res = {'msg':'Already Voted'}
+					res = {'msg':'You have already voted'}
 					json_data = JSONRenderer().render(res)
 					return HttpResponse(json_data, content_type='application/json')
 			except Exception as e:
 				print('Exception: ', e)
 				# pass
 				serializer.save()
-				res = {'msg':'Data Created'}
+				res = {'msg':'Your vote successfully submitted!'}
 				json_data = JSONRenderer().render(res)
 				return HttpResponse(json_data, content_type='application/json')
 		else:
@@ -105,6 +107,49 @@ def vote_register(request):
 
 	return HttpResponse({'error-1':'test'}, content_type='application/json')
 
+
+def get_mx_status(domain):
+	try:
+		mx_record = str(dns.resolver.query(domain, 'MX')[0].exchange)
+		return True
+	except Exception as e:
+		print(e)
+		return False
+
+
+@csrf_exempt
+def get_email_verify(request, email):
+
+	# Disposable Email List
+	disposable_domain_list = ['mailinator.com', 'protonmail.com', 'fastmail.fm']
+
+	# Simple Regex for syntax checking
+	regex = '^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$'
+	domain = email.split('@')[1]
+
+	if request.method == 'GET':
+		# syntax check
+		verifiy_pattern = re.match(regex, email)
+		if verifiy_pattern == None:
+			print('Bad Syntax')
+			res = {"status": "false", "error": {"code": '01', "message": "Email address invalid"}}
+			json_data = JSONRenderer().render(res)
+			return HttpResponse(json_data, content_type='application/json')
+
+		elif domain in disposable_domain_list:
+			res = {"status":"false","error":{"code":"02","message":"Disposable email address"}}
+			json_data = JSONRenderer().render(res)
+			return HttpResponse(json_data, content_type='application/json')
+
+		elif not get_mx_status(domain):
+			res = {"status":"false","error":{"code":"03","message":"Domain or MX server does not exists"}}
+			json_data = JSONRenderer().render(res)
+			return HttpResponse(json_data, content_type='application/json')
+
+		else:
+			res = {"status":"true","email":email, "domain": domain}
+			json_data = JSONRenderer().render(res)
+			return HttpResponse(json_data, content_type='application/json')
 
 @api_view(['GET', 'PUT'])
 def voter_create(request, name, email):

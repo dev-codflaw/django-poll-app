@@ -2,24 +2,10 @@ from django.contrib import admin
 from import_export.admin import ExportMixin, ImportExportModelAdmin
 
 # Register your models here.
-from upstaged_data.models import Voter, Datasheet, TempDatasheet, DuplicateVotes, TempVoter, Vote, VoterReact
+from upstaged_data.models import Voter, Datasheet, TempDatasheet, DuplicateVotes, TempVoter
 # from upstaged_data.admin import ImportExportModelAdmin
 
-@admin.register(Vote)
-class VoteAdmin(ImportExportModelAdmin):
-    search_fields = ['email']
-    list_display = ['email', 'voted_for', 'game']
 
-
-# @admin.register(VoterReact):
-# class VoterReactAdmin(ImportExportModelAdmin):
-#     search_fields = ['email']
-#     list_display = ['name', 'email', 'is_valid', 'source']
-
-@admin.register(VoterReact)
-class DatasheetAdmin(ImportExportModelAdmin):
-    search_fields = ('name', 'email')
-    list_display = ("name", "email", "is_valid", "source")
 
 def make_pending(modeladmin, request, queryset):
     queryset.update(verification_pending=True, email_confirmed=False, invalid=False, email_verification_source='by admin')
